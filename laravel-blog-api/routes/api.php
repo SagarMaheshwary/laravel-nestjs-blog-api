@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\Auth\LoginController;
 use App\Http\Controllers\API\Auth\ProfileController;
+use App\Http\Controllers\API\HomeController;
+use App\Http\Controllers\API\PostController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,3 +25,7 @@ Route::prefix('auth')->group(function () {
         Route::get('/profile', [ProfileController::class, 'index']);
     });
 });
+
+Route::get('/home', [HomeController::class, 'index']);
+Route::get('/posts', [PostController::class, 'index']);
+Route::get('/posts/{slug}', [PostController::class, 'show']);

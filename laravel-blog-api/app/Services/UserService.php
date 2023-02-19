@@ -11,12 +11,12 @@ class UserService
         // 
     }
 
-    public function findById(int $id): User|null
+    public function findById(int $id): ?User
     {
         return $this->user->find($id);
     }
 
-    public function findByEmail(string $email): User|null
+    public function findByEmail(string $email): ?User
     {
         return $this->user->where('email', $email)->first();
     }
