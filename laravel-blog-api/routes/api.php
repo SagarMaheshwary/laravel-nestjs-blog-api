@@ -1,10 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\API\Auth\LoginController;
-use App\Http\Controllers\API\Auth\ProfileController;
 use App\Http\Controllers\API\HomeController;
 use App\Http\Controllers\API\PostController;
+use App\Http\Controllers\API\Auth\LoginController;
+use App\Http\Controllers\API\Auth\ProfileController;
+use App\Http\Controllers\API\Admin\PostController as AdminPostController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,3 +30,11 @@ Route::prefix('auth')->group(function () {
 Route::get('/home', [HomeController::class, 'index']);
 Route::get('/posts', [PostController::class, 'index']);
 Route::get('/posts/{slug}', [PostController::class, 'show']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    // 
+
+    Route::middleware('role:admin')->prefix('admin')->group(function () {
+        Route::apiResource('/posts', AdminPostController::class)->except('destroy');
+    });
+});

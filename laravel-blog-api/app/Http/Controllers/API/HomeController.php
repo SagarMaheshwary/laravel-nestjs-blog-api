@@ -20,7 +20,11 @@ class HomeController extends Controller
 
     public function index()
     {
-        $posts = $this->postService->getLatestPosts(10, ['user:id,name,email']);
+        $posts = $this->postService->getLatestPosts(10, [
+            'user:id,name',
+            'categories:id,title,image',
+        ]);
+
         $categories = $this->categoryService->getPopularCategories();
 
         return jsonResponse([
