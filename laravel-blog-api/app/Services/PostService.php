@@ -45,7 +45,7 @@ class PostService
             ->firstOrFail();
     }
 
-    public function getLatestPosts(int $limit = 10, array $relations = []): Collection
+    public function latest(int $limit = 10, array $relations = []): Collection
     {
         $columns = [
             'id',
@@ -57,14 +57,13 @@ class PostService
             'created_at',
         ];
 
-        return $this->post
-            ->with($relations)
+        return $this->post->with($relations)
             ->take($limit)
-            ->orderBy('created_at', 'desc')
+            ->latest()
             ->get($columns);
     }
 
-    public function createPost(array $attributes = []): Post|bool
+    public function save(array $attributes = []): Post|bool
     {
         try {
             DB::beginTransaction();
@@ -92,7 +91,7 @@ class PostService
         }
     }
 
-    public function updatePost(Post $post, array $attributes): Post|bool
+    public function update(Post $post, array $attributes): Post|bool
     {
         try {
             DB::beginTransaction();

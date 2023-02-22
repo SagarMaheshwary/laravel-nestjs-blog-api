@@ -6,6 +6,7 @@ use App\Http\Controllers\API\PostController;
 use App\Http\Controllers\API\Auth\LoginController;
 use App\Http\Controllers\API\Auth\ProfileController;
 use App\Http\Controllers\API\Admin\PostController as AdminPostController;
+use App\Http\Controllers\API\Admin\CategoryController as AdminCategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,5 +37,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::middleware('role:admin')->prefix('admin')->group(function () {
         Route::apiResource('/posts', AdminPostController::class)->except('destroy');
+        Route::apiResource('/categories', AdminCategoryController::class)->except('destroy');
     });
 });

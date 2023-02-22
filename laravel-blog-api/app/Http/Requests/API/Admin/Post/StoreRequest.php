@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Requests\API\Admin;
+namespace App\Http\Requests\API\Admin\Post;
 
 use App\Rules\API\ValidCategoriesRule;
 use App\Services\CategoryService;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StorePostRequest extends FormRequest
+class StoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
