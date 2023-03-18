@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -21,6 +22,15 @@ class Post extends Model
         'image',
         'user_id',
     ];
+
+    protected function imageUrl(): Attribute
+    {
+        $urlPrefix = config('filesystems.storage_url');
+
+        return Attribute::make(
+            get: fn ($value, $attributes) => "{$urlPrefix}{$attributes['image']}",
+        );
+    }
 
     public function user()
     {

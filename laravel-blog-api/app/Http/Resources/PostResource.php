@@ -19,7 +19,7 @@ class PostResource extends JsonResource
             'title'      => $this->title,
             'slug'       => $this->slug,
             'body'       => $this->body,
-            'image'      => $this->image,
+            'image'      => $this->image_url,
             'created_at' => $this->created_at,
             'user'       => UserResource::make($this->whenLoaded('user')),
             'categories' => CategoryResource::collection($this->whenLoaded('categories')),

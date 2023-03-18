@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Category;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Storage;
 
 class CategoryService
 {
@@ -41,7 +42,7 @@ class CategoryService
         $category = $this->category->newInstance();
         $category->title = $attributes['title'];
         $category->description = $attributes['description'];
-        $category->image = $attributes['image'];
+        $category->image = $attributes['image']->store('categories');
         $category->save();
 
         return $category;
@@ -53,7 +54,10 @@ class CategoryService
         $category->description = $attributes['description'];
 
         if (isset($attributes['image'])) {
-            $category->image = $attributes['image'];
+            $imageToDelete = $category->image;
+
+            $category->image = $attributes['image']->store('posts');
+            Storage::delete($imageToDelete);
         }
 
         $category->save();

@@ -7,6 +7,7 @@ use Exception;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class PostService
@@ -72,7 +73,7 @@ class PostService
             $post->slug = Str::slug($attributes['title']);
             $post->title = $attributes['title'];
             $post->body = $attributes['body'];
-            $post->image = $attributes['image'];
+            $post->image = $attributes['image']->store('posts');
             $post->user_id = $attributes['user_id'];
             $post->save();
 
@@ -101,7 +102,10 @@ class PostService
             $post->body = $attributes['body'];
 
             if (isset($attributes['image'])) {
-                $post->image = $attributes['image'];
+                $imageToDelete = $post->image;
+
+                $post->image = $attributes['image']->store('posts');
+                Storage::delete($imageToDelete);
             }
 
             $post->save();

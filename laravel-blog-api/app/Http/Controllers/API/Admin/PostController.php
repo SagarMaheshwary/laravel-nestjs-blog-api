@@ -7,6 +7,7 @@ use App\Http\Requests\API\Admin\Post\StoreRequest;
 use App\Http\Requests\API\Admin\Post\UpdateRequest;
 use App\Http\Resources\PostResource;
 use App\Services\PostService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 
 class PostController extends Controller
@@ -16,7 +17,7 @@ class PostController extends Controller
         //
     }
 
-    public function index()
+    public function index(): JsonResponse
     {
         $posts = $this->postService->paginated(perPage(), ['categories']);
 
@@ -27,16 +28,11 @@ class PostController extends Controller
         ]);
     }
 
-    public function store(StoreRequest $request)
+    public function store(StoreRequest $request): JsonResponse
     {
-        $attributes = $request->safe()
-            ->only(['title', 'body', 'categories']);
+        $attributes = $request->safe()->only(['title', 'body', 'categories', 'image']);
 
         $attributes['user_id'] = $request->user()->id;
-
-        //@TODO: upload image to S3
-        $attributes['image'] = 'https://fastly.picsum.photos/id/866/536/354.jpg?hmac=tGofDTV7tl2rprappPzKFiZ9vDh5MKj39oa2D--gqhA';
-
         $post = $this->postService->save($attributes);
 
         if (!$post) {
@@ -48,7 +44,7 @@ class PostController extends Controller
         ], 'Created a new post.', Response::HTTP_CREATED);
     }
 
-    public function show(int $id)
+    public function show(int $id): JsonResponse
     {
         $post = $this->postService->findById($id, ['categories']);
 
@@ -57,14 +53,11 @@ class PostController extends Controller
         ]);
     }
 
-    public function update(UpdateRequest $request, int $id)
+    public function update(UpdateRequest $request, int $id): JsonResponse
     {
-        $attributes = $request->safe()
-            ->only(['title', 'body', 'categories']);
+        $attributes = $request->safe()->only(['title', 'body', 'categories', 'image']);
 
         $post = $this->postService->findById($id);
-
-        //@TODO: upload image on S3
 
         $post = $this->postService->update($post, $attributes);
 

@@ -7,6 +7,7 @@ use App\Http\Requests\API\Admin\Category\StoreRequest;
 use App\Http\Requests\API\Admin\Category\UpdateRequest;
 use App\Http\Resources\CategoryResource;
 use App\Services\CategoryService;
+use Illuminate\Http\JsonResponse;
 
 class CategoryController extends Controller
 {
@@ -15,7 +16,7 @@ class CategoryController extends Controller
         //
     }
 
-    public function index()
+    public function index(): JsonResponse
     {
         $categories = $this->categoryService->paginated(perPage());
 
@@ -26,12 +27,9 @@ class CategoryController extends Controller
         ]);
     }
 
-    public function store(StoreRequest $request)
+    public function store(StoreRequest $request): JsonResponse
     {
-        $attributes = $request->safe()->only('title', 'description');
-
-        //@TODO: upload image to S3
-        $attributes['image'] = 'https://fastly.picsum.photos/id/866/536/354.jpg?hmac=tGofDTV7tl2rprappPzKFiZ9vDh5MKj39oa2D--gqhA';
+        $attributes = $request->safe()->only(['title', 'description', 'image']);
 
         $category = $this->categoryService->save($attributes);
 
@@ -40,7 +38,7 @@ class CategoryController extends Controller
         ], 'Created a new category.', 201);
     }
 
-    public function show(int $id)
+    public function show(int $id): JsonResponse
     {
         $category = $this->categoryService->findById($id);
 
@@ -49,13 +47,11 @@ class CategoryController extends Controller
         ]);
     }
 
-    public function update(UpdateRequest $request, int $id)
+    public function update(UpdateRequest $request, int $id): JsonResponse
     {
-        $attributes = $request->safe()->only('title', 'description');
+        $attributes = $request->safe()->only(['title', 'description', 'image']);
 
         $category = $this->categoryService->findById($id);
-
-        //@TODO: upload image to S3
 
         $category = $this->categoryService->update($category, $attributes);
 

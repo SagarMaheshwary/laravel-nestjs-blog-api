@@ -5,7 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PostResource;
 use App\Services\PostService;
-use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 
 class PostController extends Controller
 {
@@ -14,7 +14,7 @@ class PostController extends Controller
         // 
     }
 
-    public function index()
+    public function index(): JsonResponse
     {
         $posts = $this->postService->paginated(perPage(), [
             'user:id,name,email',
@@ -28,7 +28,7 @@ class PostController extends Controller
         ]);
     }
 
-    public function show(string $slug)
+    public function show(string $slug): JsonResponse
     {
         $post = $this->postService->findBySlug($slug, [
             'user:id,name,email',
