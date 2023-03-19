@@ -41,4 +41,15 @@ class Post extends Model
     {
         return $this->belongsToMany(Category::class, 'post_category', 'post_id', 'category_id');
     }
+
+    /**
+     * Get all the post comments that are not
+     * replies.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function comments()
+    {
+        return $this->hasMany(Comment::class, 'post_id')->whereNull('parent_id');
+    }
 }

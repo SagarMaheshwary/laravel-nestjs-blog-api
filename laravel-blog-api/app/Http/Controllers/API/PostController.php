@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PostResource;
 use App\Services\PostService;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\JsonResponse;
 
 class PostController extends Controller
@@ -18,7 +19,7 @@ class PostController extends Controller
     {
         $posts = $this->postService->paginated(perPage(), [
             'user:id,name,email',
-            'categories',
+            'categories:id,title',
         ]);
 
         return jsonResponse([
@@ -32,7 +33,8 @@ class PostController extends Controller
     {
         $post = $this->postService->findBySlug($slug, [
             'user:id,name,email',
-            'categories',
+            'categories:id,title,description',
+            'comments' => fn (HasMany $query) => $query->latest()->take(10),
         ]);
 
         return jsonResponse([
