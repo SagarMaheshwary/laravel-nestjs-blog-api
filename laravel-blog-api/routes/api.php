@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\HomeController;
 use App\Http\Controllers\API\PostController;
+use App\Http\Controllers\API\CommentController;
 use App\Http\Controllers\API\Auth\LoginController;
 use App\Http\Controllers\API\Auth\ProfileController;
 use App\Http\Controllers\API\Admin\PostController as AdminPostController;
@@ -29,8 +30,19 @@ Route::prefix('auth')->group(function () {
 });
 
 Route::get('/home', [HomeController::class, 'index']);
-Route::get('/posts', [PostController::class, 'index']);
-Route::get('/posts/{slug}', [PostController::class, 'show']);
+
+Route::prefix('/posts')->group(function () {
+    Route::get('/', [PostController::class, 'index']);
+    Route::get('/{slug}', [PostController::class, 'show']);
+    Route::get('/{id}/comments', [CommentController::class, 'index']);
+    Route::get('/{id}/comments/{commentId}/replies', [CommentController::class, 'replies']);
+
+    Route::prefix('{id}/comments')->middleware('auth:sanctum')->group(function () {
+        Route::post('/', [CommentController::class, 'store']);
+        Route::put('/{commentId}', [CommentController::class, 'update']);
+        Route::delete('/{commentId}', [CommentController::class, 'delete']);
+    });
+});
 
 Route::middleware('auth:sanctum')->group(function () {
     // 

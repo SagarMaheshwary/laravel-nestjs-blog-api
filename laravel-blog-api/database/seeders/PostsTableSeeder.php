@@ -19,14 +19,17 @@ class PostsTableSeeder extends Seeder
      */
     public function run()
     {
+        $admin = User::where('role', 'admin')->first();
+        $users = User::where('role', 'user')->get();
+
         Post::factory()
             ->count(20)
-            ->for(User::where('role', 'admin')->first()) // this will be our first user (admin@gmail.com).
-            ->hasAttached(Category::all()) // create 20 posts for each category
+            ->for($admin)
+            ->hasAttached(Category::all()) //Create 20 posts for each category
             ->has(
-                Comment::factory()->state(new Sequence(
-                    fn ($sequence) => ['user_id' => User::where('role', 'user')->get()->random()],
-                ))->count(10) // create 10 comments for each post
+                Comment::factory()->state(
+                    new Sequence(fn ($sequence) => ['user_id' => $users->random()])
+                )->count(25) //Create comments for each post
             )
             ->create();
     }

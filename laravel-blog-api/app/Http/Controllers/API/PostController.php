@@ -34,7 +34,6 @@ class PostController extends Controller
         $post = $this->postService->findBySlug($slug, [
             'user:id,name,email',
             'categories:id,title,description',
-            'comments' => fn (HasMany $query) => $query->latest()->take(10),
         ]);
 
         return jsonResponse([

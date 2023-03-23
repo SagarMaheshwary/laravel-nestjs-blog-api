@@ -8,6 +8,7 @@ use App\Http\Requests\API\Admin\Category\UpdateRequest;
 use App\Http\Resources\CategoryResource;
 use App\Services\CategoryService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 
 class CategoryController extends Controller
 {
@@ -35,7 +36,7 @@ class CategoryController extends Controller
 
         return jsonResponse([
             'category' => new CategoryResource($category),
-        ], 'Created a new category.', 201);
+        ], 'Created a new category.', Response::HTTP_CREATED);
     }
 
     public function show(int $id): JsonResponse
@@ -57,6 +58,6 @@ class CategoryController extends Controller
 
         return jsonResponse([
             'category' => new CategoryResource($category),
-        ], 'Selected category has been updated.', 201);
+        ], 'Selected category has been updated.');
     }
 }

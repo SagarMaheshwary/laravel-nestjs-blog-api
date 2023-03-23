@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Services\UserService;
+use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -14,19 +14,19 @@ class UsersTableSeeder extends Seeder
      *
      * @return void
      */
-    public function run(UserService $userService)
+    public function run()
     {
-        $userService->createUser([
+        User::create([
             'name'     => 'Admin',
             'role'     => 'admin',
-            'email'    => 'admin@gmail.com',
+            'email'    => 'admin@blog.com',
             'password' => Hash::make('Password123'),
         ]);
 
-        $userService->createUser([
-            'name' => 'User',
-            'role' => 'user',
-            'email' => 'user@gmail.com',
+        User::create([
+            'name'     => 'User',
+            'role'     => 'user',
+            'email'    => 'user@gmail.com',
             'password' => Hash::make('Password123'),
         ]);
     }
