@@ -40,7 +40,6 @@ Route::prefix('/posts')->group(function () {
     Route::prefix('{id}/comments')->middleware('auth:sanctum')->group(function () {
         Route::post('/', [CommentController::class, 'store']);
         Route::put('/{commentId}', [CommentController::class, 'update']);
-        Route::delete('/{commentId}', [CommentController::class, 'delete']);
     });
 });
 
