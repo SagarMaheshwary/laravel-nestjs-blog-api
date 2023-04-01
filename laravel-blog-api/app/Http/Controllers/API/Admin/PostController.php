@@ -46,7 +46,7 @@ class PostController extends Controller
 
     public function show(int $id): JsonResponse
     {
-        $post = $this->postService->findById($id, ['categories']);
+        $post = $this->postService->findOne($id, ['categories']);
 
         return jsonResponse([
             'post' => new PostResource($post),
@@ -57,8 +57,7 @@ class PostController extends Controller
     {
         $attributes = $request->safe()->only(['title', 'body', 'categories', 'image']);
 
-        $post = $this->postService->findById($id);
-
+        $post = $this->postService->findOne($id);
         $post = $this->postService->update($post, $attributes);
 
         if (!$post) {

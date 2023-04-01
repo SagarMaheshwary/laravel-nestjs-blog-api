@@ -19,9 +19,9 @@ class CommentController extends Controller
         //
     }
 
-    public function index(int $id): JsonResponse
+    public function index(int $postId): JsonResponse
     {
-        $comments = $this->commentService->paginatedByPost($id, perPage());
+        $comments = $this->commentService->paginatedByPost($postId, perPage());
 
         return jsonResponse([
             'comments' => CommentResource::collection($comments)
@@ -30,7 +30,7 @@ class CommentController extends Controller
         ]);
     }
 
-    public function replies(int $id, int $commentId): JsonResponse
+    public function replies(int $postId, int $commentId): JsonResponse
     {
         $comments = $this->commentService->paginatedReplies($commentId, perPage());
 
@@ -41,10 +41,10 @@ class CommentController extends Controller
         ]);
     }
 
-    public function store(StoreRequest $request, int $id): JsonResponse
+    public function store(StoreRequest $request, int $postId): JsonResponse
     {
         $attributes = $request->safe()->only('body');
-        $attributes['post_id'] = $id;
+        $attributes['post_id'] = $postId;
         $attributes['user_id'] = Auth::id();
 
         $comment = $this->commentService->save($attributes);
@@ -54,9 +54,9 @@ class CommentController extends Controller
         ], 'Comment posted.', Response::HTTP_CREATED);
     }
 
-    public function update(UpdateRequest $request, int $id, int $commentId): JsonResponse
+    public function update(UpdateRequest $request, int $postId, int $commentId): JsonResponse
     {
-        $comment = $this->commentService->find($commentId, $id);
+        $comment = $this->commentService->find($commentId, $postId);
 
         $comment = $this->commentService->update(
             $comment,
@@ -78,9 +78,9 @@ class CommentController extends Controller
         ]);
     }
 
-    public function toggleLike(int $id, $commentId): JsonResponse
+    public function toggleLike(int $postId, $commentId): JsonResponse
     {
-        $post = $this->commentService->find($commentId, $id);
+        $post = $this->commentService->find($commentId, $postId);
         $liked = $this->commentService->toggleLike($post, Auth::id());
 
         return jsonResponse([

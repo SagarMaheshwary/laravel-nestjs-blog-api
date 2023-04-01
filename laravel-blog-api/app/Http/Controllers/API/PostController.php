@@ -37,7 +37,7 @@ class PostController extends Controller
             'categories:id,title,description',
         ];
 
-        $post = $this->postService->findBySlug($slug, $relations, ['likes']);
+        $post = $this->postService->findOne($slug, $relations, ['likes']);
 
         return jsonResponse([
             'post' => new PostResource($post),
@@ -46,7 +46,7 @@ class PostController extends Controller
 
     public function likes(int $id): JsonResponse
     {
-        $post = $this->postService->findById($id);
+        $post = $this->postService->findOne($id);
         $likes = $this->postService->likes($post, ['user:id,name']);
 
         return jsonResponse([
@@ -56,7 +56,7 @@ class PostController extends Controller
 
     public function toggleLike(int $id): JsonResponse
     {
-        $post = $this->postService->findById($id);
+        $post = $this->postService->findOne($id);
         $liked = $this->postService->toggleLike($post, Auth::id());
 
         return jsonResponse([

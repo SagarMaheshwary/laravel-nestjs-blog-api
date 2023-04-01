@@ -34,24 +34,14 @@ class PostService
             ->paginate($perPage, $columns);
     }
 
-    public function findById(
-        int $id,
+    public function findOne(
+        int|string $key,
         array $relations = [],
         array $countableRelations = []
     ): ?Post {
         return $this->post->with($relations)
             ->withCount($countableRelations)
-            ->findOrFail($id);
-    }
-
-    public function findBySlug(
-        string $slug,
-        array $relations = [],
-        array $countableRelations = []
-    ): ?Post {
-        return $this->post->with($relations)
-            ->withCount($countableRelations)
-            ->where('slug', $slug)
+            ->where(is_int($key) ? 'id' : 'slug', $key)
             ->firstOrFail();
     }
 
