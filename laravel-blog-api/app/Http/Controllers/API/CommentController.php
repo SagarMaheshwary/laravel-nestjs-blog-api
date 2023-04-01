@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\API\Comment\StoreRequest;
 use App\Http\Requests\API\Comment\UpdateRequest;
 use App\Http\Resources\CommentResource;
+use App\Http\Resources\LikeResource;
 use App\Services\CommentService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
@@ -65,5 +66,25 @@ class CommentController extends Controller
         return jsonResponse([
             'comment' => new CommentResource($comment),
         ], 'Selected comment has been updated.');
+    }
+
+    public function likes(int $postId, int $commentId): JsonResponse
+    {
+        $post = $this->commentService->find($commentId, $postId);
+        $likes = $this->commentService->likes($post, ['user:id,name']);
+
+        return jsonResponse([
+            'likes' => LikeResource::collection($likes),
+        ]);
+    }
+
+    public function toggleLike(int $id, $commentId): JsonResponse
+    {
+        $post = $this->commentService->find($commentId, $id);
+        $liked = $this->commentService->toggleLike($post, Auth::id());
+
+        return jsonResponse([
+            'liked' => $liked,
+        ]);
     }
 }

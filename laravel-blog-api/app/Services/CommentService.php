@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Comment;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 
 class CommentService
 {
@@ -55,5 +56,26 @@ class CommentService
         return $this->comment->where('id', $id)
             ->when($postId, fn (Builder $query) => $query->where('post_id', $postId))
             ->firstOrFail();
+    }
+
+    public function likes(Comment $comment, array $relations = []): Collection
+    {
+        //@SUGGEST: can be paginated?
+        return $comment->likes()->with($relations)->get();
+    }
+
+    public function toggleLike(Comment $comment, int $userId): bool
+    {
+        if ($comment->likes()->where('user_id', $userId)->exists()) {
+            $comment->likes()->where('user_id', $userId)->delete();
+
+            return false;
+        }
+
+        $comment->likes()->create([
+            'user_id' => $userId,
+        ]);
+
+        return true;
     }
 }

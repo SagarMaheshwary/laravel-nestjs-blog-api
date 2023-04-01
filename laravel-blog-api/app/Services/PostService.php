@@ -34,14 +34,23 @@ class PostService
             ->paginate($perPage, $columns);
     }
 
-    public function findById(int $id, array $relations = []): ?Post
-    {
-        return $this->post->with($relations)->findOrFail($id);
+    public function findById(
+        int $id,
+        array $relations = [],
+        array $countableRelations = []
+    ): ?Post {
+        return $this->post->with($relations)
+            ->withCount($countableRelations)
+            ->findOrFail($id);
     }
 
-    public function findBySlug(string $slug, array $relations = []): ?Post
-    {
+    public function findBySlug(
+        string $slug,
+        array $relations = [],
+        array $countableRelations = []
+    ): ?Post {
         return $this->post->with($relations)
+            ->withCount($countableRelations)
             ->where('slug', $slug)
             ->firstOrFail();
     }
@@ -123,5 +132,26 @@ class PostService
 
             return false;
         }
+    }
+
+    public function likes(Post $post, array $relations = []): Collection
+    {
+        //@SUGGEST: can be paginated?
+        return $post->likes()->with($relations)->get();
+    }
+
+    public function toggleLike(Post $post, int $userId): bool
+    {
+        if ($post->likes()->where('user_id', $userId)->exists()) {
+            $post->likes()->where('user_id', $userId)->delete();
+
+            return false;
+        }
+
+        $post->likes()->create([
+            'user_id' => $userId,
+        ]);
+
+        return true;
     }
 }

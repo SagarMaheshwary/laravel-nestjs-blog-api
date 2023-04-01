@@ -34,20 +34,26 @@ Route::get('/home', [HomeController::class, 'index']);
 Route::prefix('/posts')->group(function () {
     Route::get('/', [PostController::class, 'index']);
     Route::get('/{slug}', [PostController::class, 'show']);
-    Route::get('/{id}/comments', [CommentController::class, 'index']);
-    Route::get('/{id}/comments/{commentId}/replies', [CommentController::class, 'replies']);
 
-    Route::prefix('{id}/comments')->middleware('auth:sanctum')->group(function () {
-        Route::post('/', [CommentController::class, 'store']);
-        Route::put('/{commentId}', [CommentController::class, 'update']);
+    Route::get('/{id}/likes', [PostController::class, 'likes']);
+    Route::put('/{id}/likes', [PostController::class, 'toggleLike'])
+        ->middleware('auth:sanctum');
+
+    Route::prefix('{id}/comments')->group(function () {
+        Route::get('/', [CommentController::class, 'index']);
+        Route::get('/{commentId}/replies', [CommentController::class, 'replies']);
+        Route::get('/{commentId}/likes', [CommentController::class, 'likes']);
+
+        Route::middleware('auth:sanctum')->group(function () {
+            Route::post('/', [CommentController::class, 'store']);
+            Route::put('/{commentId}', [CommentController::class, 'update']);
+
+            Route::put('/{commentId}/likes', [CommentController::class, 'toggleLike']);
+        });
     });
 });
 
-Route::middleware('auth:sanctum')->group(function () {
-    // 
-
-    Route::middleware('role:admin')->prefix('admin')->group(function () {
-        Route::apiResource('/posts', AdminPostController::class)->except('destroy');
-        Route::apiResource('/categories', AdminCategoryController::class)->except('destroy');
-    });
+Route::middleware(['auth:sanctum', 'role:admin'])->prefix('admin')->group(function () {
+    Route::apiResource('/posts', AdminPostController::class)->except('destroy');
+    Route::apiResource('/categories', AdminCategoryController::class)->except('destroy');
 });
