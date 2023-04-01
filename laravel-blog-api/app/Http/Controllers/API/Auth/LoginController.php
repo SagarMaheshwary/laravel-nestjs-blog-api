@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\API\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\API\LoginRequest;
+use App\Http\Requests\API\Auth\LoginRequest;
 use App\Http\Resources\UserResource;
 use App\Services\AuthService;
 use Illuminate\Http\JsonResponse;

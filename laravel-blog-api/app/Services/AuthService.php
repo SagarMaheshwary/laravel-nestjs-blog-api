@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
 class AuthService
@@ -19,11 +20,14 @@ class AuthService
             return false;
         }
 
-        $token = $user->createToken('app')->plainTextToken;
-
         return [
             'user'  => $user,
-            'token' => $token,
+            'token' => $this->issueToken($user),
         ];
+    }
+
+    public function issueToken(User $user, $name = 'app')
+    {
+        return $user->createToken($name)->plainTextToken;
     }
 }

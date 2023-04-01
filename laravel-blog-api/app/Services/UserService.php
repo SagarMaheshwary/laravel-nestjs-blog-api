@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class UserService
 {
@@ -21,8 +22,16 @@ class UserService
         return $this->user->where('email', $email)->first();
     }
 
-    public function createUser(array $attributes): User
+    public function save(array $attributes): User
     {
-        return $this->user->create($attributes);
+        $user = $this->user->newInstance();
+        $user->name = $attributes['name'];
+        $user->email = $attributes['email'];
+        $user->password = Hash::make($attributes['password']);
+        $user->image = $attributes['image']->store('users');
+        $user->role = $attributes['role'];
+        $user->save();
+
+        return $user;
     }
 }
