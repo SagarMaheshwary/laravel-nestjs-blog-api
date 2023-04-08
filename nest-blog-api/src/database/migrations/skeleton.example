@@ -1,0 +1,23 @@
+import { QueryInterface, Sequelize } from "sequelize"
+
+const table = ""
+
+export = {
+    up: async (queryInterface: QueryInterface, Sequelize: Sequelize) => {
+        /*
+            Add create/alter commands here.
+            Return a promise to correctly handle asynchronicity.
+            Example:
+            return queryInterface.createTable(table, { id: Sequelize.INTEGER });
+        */
+    },
+
+    down: async (queryInterface: QueryInterface, Sequelize: Sequelize) => {
+        /*
+            Add revert commands here.
+            Return a promise to correctly handle asynchronicity.
+            Example:
+            return queryInterface.dropTable(table);
+        */
+    },
+}
