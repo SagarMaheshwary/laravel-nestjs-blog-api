@@ -1,7 +1,11 @@
-import { Module } from '@nestjs/common';
+import { Logger, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import config from './config';
+import { AuthModule } from './modules/auth/auth.module';
+import { UserModule } from './modules/user/user.module';
 import { SequelizeModule } from '@nestjs/sequelize';
+import { User } from './modules/user/user.model';
+import { Sequelize } from 'sequelize-typescript';
 
 @Module({
   imports: [
@@ -12,7 +16,7 @@ import { SequelizeModule } from '@nestjs/sequelize';
     SequelizeModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
+      useFactory: async (configService: ConfigService) => ({
         dialect: configService.get('database.dialect'),
         host: configService.get('database.host'),
         database: configService.get('database.database'),
@@ -20,11 +24,14 @@ import { SequelizeModule } from '@nestjs/sequelize';
         password: configService.get('database.password'),
         port: configService.get('database.port'),
         schema: configService.get('database.schema'),
-        logging: configService.get('database.logging'),
-      })
+        models: [User],
+        logging: (sql, timing) => new Logger(Sequelize.name).log(sql),
+      }),
     }),
+    UserModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [],
 })
-export class AppModule { }
+export class AppModule {}

@@ -1,23 +1,23 @@
-import { QueryInterface, Sequelize } from "sequelize"
+import { DataTypes, QueryInterface, Sequelize } from 'sequelize';
 
-const table = ""
+const table = '';
 
 export = {
-    up: async (queryInterface: QueryInterface, Sequelize: Sequelize) => {
-        /*
-            Add create/alter commands here.
-            Return a promise to correctly handle asynchronicity.
-            Example:
-            return queryInterface.createTable(table, { id: Sequelize.INTEGER });
-        */
-    },
+  up: async (queryInterface: QueryInterface, Sequelize: Sequelize) => {
+    /*
+      Add create/alter commands here.
+      Return a promise to correctly handle asynchronicity.
+      Example:
+      return queryInterface.createTable(table, { id: DataTypes.BIGINT });
+    */
+  },
 
-    down: async (queryInterface: QueryInterface, Sequelize: Sequelize) => {
-        /*
-            Add revert commands here.
-            Return a promise to correctly handle asynchronicity.
-            Example:
-            return queryInterface.dropTable(table);
-        */
-    },
-}
+  down: async (queryInterface: QueryInterface, Sequelize: Sequelize) => {
+    /*
+      Add revert commands here.
+      Return a promise to correctly handle asynchronicity.
+      Example:
+      return queryInterface.dropTable(table);
+    */
+  },
+};

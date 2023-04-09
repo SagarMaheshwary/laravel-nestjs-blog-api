@@ -16,5 +16,10 @@ export default () => ({
     port: Number(getEnv('DB_PORT')),
     schema: getEnv('DB_SCHEMA'),
     logging: JSON.parse(getEnv('DB_LOGGING')),
-  }
+  },
+  jwt: {
+    secret: getEnv('JWT_SECRET'),
+    expiry: getEnv('JWT_EXPIRY', '3600'),
+    algorithm: getEnv('JWT_ALGORITHM'),
+  },
 });
