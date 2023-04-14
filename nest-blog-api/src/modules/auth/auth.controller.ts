@@ -23,6 +23,7 @@ export class AuthController {
   ) {}
 
   @Post('/login')
+  @HttpCode(HttpStatus.OK)
   async login(@Body() loginDTO: LoginDTO) {
     const token = await this.authService.login(loginDTO);
 
@@ -31,6 +32,7 @@ export class AuthController {
 
   @Get('/profile')
   @UseGuards(AuthGuard)
+  @HttpCode(HttpStatus.OK)
   async profile(@Req() req) {
     return await this.userService.findOne(req.user.sub);
   }

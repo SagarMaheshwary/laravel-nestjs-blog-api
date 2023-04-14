@@ -1,4 +1,6 @@
-import { IsDefined, IsEmail, Length } from 'class-validator';
+import { IsDefined, IsEmail, Length, Validate } from 'class-validator';
+import { User } from 'src/modules/user/user.model';
+import { UniqueDatabaseField } from 'src/validators/unique-database-field';
 
 export class LoginDTO {
   @IsDefined()
@@ -8,5 +10,6 @@ export class LoginDTO {
 
   @IsDefined()
   @Length(5, 255)
+  @Validate(UniqueDatabaseField, [User, 'email'])
   password: string;
 }
