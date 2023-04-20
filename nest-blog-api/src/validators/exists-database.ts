@@ -7,10 +7,10 @@ import {
 import { Sequelize } from 'sequelize-typescript';
 
 @ValidatorConstraint({
-  name: 'UniqueDatabaseField',
+  name: 'ExistsDatabase',
   async: true,
 })
-export class UniqueDatabaseField implements ValidatorConstraintInterface {
+export class ExistsDatabase implements ValidatorConstraintInterface {
   constructor(@InjectConnection() private readonly sequelize: Sequelize) {}
 
   async validate(
@@ -18,7 +18,9 @@ export class UniqueDatabaseField implements ValidatorConstraintInterface {
     validationArguments?: ValidationArguments,
   ): Promise<boolean> {
     const modelClass = validationArguments.constraints[0]; //Sequelize model class
-    const column = validationArguments.constraints[1] as string; //Column to query from
+    const column =
+      (validationArguments.constraints[1] as string) ||
+      validationArguments.property; //Column to query from
 
     const model = await this.sequelize.getRepository(modelClass).findOne({
       where: {
@@ -26,10 +28,10 @@ export class UniqueDatabaseField implements ValidatorConstraintInterface {
       },
     });
 
-    return !Boolean(model);
+    return Boolean(model);
   }
 
   defaultMessage?(validationArguments?: ValidationArguments): string {
-    return `The ${validationArguments.constraints[1]} should be unique.`;
+    return `The given ${validationArguments.property} does not exists.`;
   }
 }

@@ -1,15 +1,12 @@
+import { PickType } from '@nestjs/mapped-types';
 import { IsDefined, IsEmail, Length, Validate } from 'class-validator';
+import { CreateUserDTO } from 'src/modules/user/dto/create-user.dto';
 import { User } from 'src/modules/user/user.model';
-import { UniqueDatabaseField } from 'src/validators/unique-database-field';
+import { ExistsDatabase } from 'src/validators/exists-database';
 
-export class LoginDTO {
+export class LoginDTO extends PickType(CreateUserDTO, ['password' as const]) {
   @IsDefined()
   @IsEmail()
-  @Length(5, 255)
+  @Validate(ExistsDatabase, [User, 'email'])
   email: string;
-
-  @IsDefined()
-  @Length(5, 255)
-  @Validate(UniqueDatabaseField, [User, 'email'])
-  password: string;
 }

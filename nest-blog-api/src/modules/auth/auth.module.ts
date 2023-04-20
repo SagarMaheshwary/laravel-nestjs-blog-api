@@ -4,12 +4,14 @@ import { AuthController } from './auth.controller';
 import { UserModule } from '../user/user.module';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { UniqueDatabaseField } from 'src/validators/unique-database-field';
+import { ExistsDatabase } from 'src/validators/exists-database';
+import { UniqueDatabase } from 'src/validators/unique-database';
 
 @Module({
   providers: [
     AuthService,
-    UniqueDatabaseField, //Adding UniqueDatabaseField in providers so we nest can inject sequelize
+    ExistsDatabase, //Adding to providers so nest can inject sequelize
+    UniqueDatabase, //Adding to providers so nest can inject sequelize
   ],
   controllers: [AuthController],
   imports: [

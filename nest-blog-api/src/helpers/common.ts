@@ -18,7 +18,7 @@ export const getRelativePath = (file: string, extension: boolean = false) => {
   return filePath.split('.').slice(0, -1).join('.');
 };
 
-export const response = (data: object, message: string) => {
+export const response = (data: object, message: string = null) => {
   return {
     data,
     message,

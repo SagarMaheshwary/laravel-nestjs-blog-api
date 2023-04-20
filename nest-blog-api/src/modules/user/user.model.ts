@@ -1,3 +1,5 @@
+import { Exclude } from 'class-transformer';
+import { DataTypes } from 'sequelize';
 import { Column, Model, Table } from 'sequelize-typescript';
 
 @Table({
@@ -6,24 +8,24 @@ import { Column, Model, Table } from 'sequelize-typescript';
   updatedAt: 'updated_at',
 })
 export class User extends Model {
-  @Column({ primaryKey: true })
+  @Column({ primaryKey: true, type: DataTypes.BIGINT, autoIncrement: true })
   id: number;
 
-  @Column
+  @Column(DataTypes.STRING)
   name: string;
 
-  @Column
+  @Column(DataTypes.STRING)
   email: string;
 
-  @Column
+  @Column(DataTypes.STRING)
   password: string;
 
-  @Column
+  @Column(DataTypes.STRING)
   role: string;
 
-  @Column
+  @Column(DataTypes.DATE)
   created_at: Date;
 
-  @Column
+  @Column(DataTypes.DATE)
   updated_at: Date;
 }

@@ -22,4 +22,7 @@ export default () => ({
     expiry: getEnv('JWT_EXPIRY', '3600'),
     algorithm: getEnv('JWT_ALGORITHM'),
   },
+  password: {
+    salt_rounds: Number(getEnv('PASSWORD_ROUNDS', 10)),
+  },
 });
