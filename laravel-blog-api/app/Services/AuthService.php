@@ -12,7 +12,7 @@ class AuthService
         //
     }
 
-    public function authenticate(string $email, string $password): array
+    public function authenticate(string $email, string $password): array|false
     {
         $user = $this->userService->findByEmail($email);
 
