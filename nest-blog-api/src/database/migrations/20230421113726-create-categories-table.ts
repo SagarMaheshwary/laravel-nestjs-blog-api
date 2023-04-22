@@ -1,27 +1,24 @@
 import { DataTypes, QueryInterface, Sequelize } from 'sequelize';
 
-const table = 'users';
+const table = 'categories';
 
 export = {
   up: async (queryInterface: QueryInterface, sequelize: Sequelize) => {
     return queryInterface.createTable(table, {
       id: {
         type: DataTypes.BIGINT,
-        primaryKey: true,
         autoIncrement: true,
+        primaryKey: true,
       },
-      name: {
+      title: {
         type: DataTypes.STRING(100),
       },
-      email: {
-        type: DataTypes.STRING(255),
-        unique: true,
+      description: {
+        type: DataTypes.TEXT,
+        allowNull: true,
       },
-      password: {
-        type: DataTypes.STRING(255),
-      },
-      role: {
-        type: DataTypes.STRING(50),
+      image: {
+        type: DataTypes.STRING(250),
       },
       created_at: {
         type: DataTypes.DATE,

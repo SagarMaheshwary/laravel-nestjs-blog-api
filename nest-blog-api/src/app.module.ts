@@ -6,6 +6,8 @@ import { UserModule } from './modules/user/user.module';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { User } from './modules/user/user.model';
 import { Sequelize } from 'sequelize-typescript';
+import { Post } from './modules/post/post.model';
+import { Category } from './modules/category/category.model';
 
 @Module({
   imports: [
@@ -24,7 +26,7 @@ import { Sequelize } from 'sequelize-typescript';
         password: configService.get('database.password'),
         port: configService.get('database.port'),
         schema: configService.get('database.schema'),
-        models: [User],
+        models: [User, Post, Category],
         logging: (sql, timing) => new Logger(Sequelize.name).log(sql),
       }),
     }),

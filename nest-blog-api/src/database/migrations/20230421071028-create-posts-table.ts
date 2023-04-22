@@ -1,6 +1,6 @@
 import { DataTypes, QueryInterface, Sequelize } from 'sequelize';
 
-const table = 'users';
+const table = 'posts';
 
 export = {
   up: async (queryInterface: QueryInterface, sequelize: Sequelize) => {
@@ -10,18 +10,27 @@ export = {
         primaryKey: true,
         autoIncrement: true,
       },
-      name: {
-        type: DataTypes.STRING(100),
-      },
-      email: {
+      slug: {
         type: DataTypes.STRING(255),
         unique: true,
       },
-      password: {
+      title: {
         type: DataTypes.STRING(255),
       },
-      role: {
-        type: DataTypes.STRING(50),
+      body: {
+        type: DataTypes.TEXT,
+      },
+      image: {
+        type: DataTypes.STRING(250),
+      },
+      user_id: {
+        type: DataTypes.BIGINT,
+        references: {
+          model: {
+            tableName: 'users',
+          },
+          key: 'id',
+        },
       },
       created_at: {
         type: DataTypes.DATE,
