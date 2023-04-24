@@ -2,7 +2,7 @@ import { DataTypes } from 'sequelize';
 import { Column, Model, Table } from 'sequelize-typescript';
 
 @Table({
-  tableName: 'users',
+  tableName: 'categories',
   createdAt: 'created_at',
   updatedAt: 'updated_at',
 })
