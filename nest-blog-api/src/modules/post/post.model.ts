@@ -14,7 +14,11 @@ import { User } from '../user/user.model';
   updatedAt: 'updated_at',
 })
 export class Post extends Model {
-  @Column({ primaryKey: true, type: DataTypes.BIGINT, autoIncrement: true })
+  @Column({
+    primaryKey: true,
+    type: DataTypes.BIGINT,
+    autoIncrement: true,
+  })
   id: number;
 
   @Column(DataTypes.STRING)

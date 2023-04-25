@@ -8,9 +8,23 @@ import { User } from './modules/user/user.model';
 import { Sequelize } from 'sequelize-typescript';
 import { Post } from './modules/post/post.model';
 import { Category } from './modules/category/category.model';
+import { PostModule } from './modules/post/post.module';
+import { CategoryModule } from './modules/category/category.module';
+import { PostModule as AdminPostModule } from './modules/admin/post/post.module';
+import { CategoryModule as AdminCategoryModule } from './modules/admin/category/category.module';
+import { APP_GUARD, RouterModule } from '@nestjs/core';
+import { AuthGuard } from './modules/auth/guards/auth.guard';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
+    UserModule,
+    AuthModule,
+    PostModule,
+    CategoryModule,
+    AdminPostModule,
+    AdminCategoryModule,
+    JwtModule,
     ConfigModule.forRoot({
       isGlobal: true,
       load: [config],
@@ -30,10 +44,35 @@ import { Category } from './modules/category/category.model';
         logging: (sql, timing) => new Logger(Sequelize.name).log(sql),
       }),
     }),
-    UserModule,
-    AuthModule,
+    RouterModule.register([
+      {
+        path: 'auth',
+        module: AuthModule,
+      },
+      {
+        path: 'posts',
+        module: PostModule,
+      },
+      {
+        path: 'admin',
+        children: [
+          {
+            path: 'posts',
+            module: AdminPostModule,
+          },
+          {
+            path: 'categories',
+            module: AdminCategoryModule,
+          },
+        ],
+      },
+    ]),
   ],
-  controllers: [],
-  providers: [],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
+    },
+  ],
 })
 export class AppModule {}

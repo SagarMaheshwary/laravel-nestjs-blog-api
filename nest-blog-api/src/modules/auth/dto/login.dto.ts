@@ -7,6 +7,6 @@ import { ExistsDatabase } from 'src/validators/exists-database';
 export class LoginDTO extends PickType(CreateUserDTO, ['password' as const]) {
   @IsDefined()
   @IsEmail()
-  @Validate(ExistsDatabase, [User, 'email'])
+  @Validate(ExistsDatabase, [User])
   email: string;
 }

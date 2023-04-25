@@ -6,18 +6,17 @@ import {
   HttpStatus,
   Inject,
   Post,
-  UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDTO } from './dto/login.dto';
 import { response } from 'src/helpers/common';
-import { AuthGuard } from './auth.guard';
-import { User } from 'src/decorators/auth/user.decorator';
 import { User as UserModel } from '../user/user.model';
 import { RegisterDTO } from './dto/register.dto';
 import { UserService } from '../user/user.service';
+import { User } from './decorators/user.decorator';
+import { Public } from './decorators/public.decorator';
 
-@Controller('auth')
+@Controller()
 export class AuthController {
   constructor(
     @Inject(AuthService) private readonly authService: AuthService,
@@ -25,6 +24,7 @@ export class AuthController {
   ) {}
 
   @Post('/register')
+  @Public()
   @HttpCode(HttpStatus.CREATED)
   async register(@Body() registerDTO: RegisterDTO) {
     registerDTO.role = 'user';
@@ -36,18 +36,18 @@ export class AuthController {
   }
 
   @Post('/login')
+  @Public()
   @HttpCode(HttpStatus.OK)
   async login(@Body() loginDTO: LoginDTO) {
-    const token = await this.authService.login(
+    const [user, token] = await this.authService.login(
       loginDTO.email,
       loginDTO.password,
     );
 
-    return response({ token }, 'You are logged in!');
+    return response({ user, token }, 'You are logged in!');
   }
 
   @Get('/profile')
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   async profile(@User() user: UserModel) {
     return response({ user });

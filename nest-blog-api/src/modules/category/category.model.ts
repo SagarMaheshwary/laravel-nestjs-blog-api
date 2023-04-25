@@ -7,7 +7,11 @@ import { Column, Model, Table } from 'sequelize-typescript';
   updatedAt: 'updated_at',
 })
 export class Category extends Model {
-  @Column({ primaryKey: true, type: DataTypes.BIGINT, autoIncrement: true })
+  @Column({
+    primaryKey: true,
+    type: DataTypes.BIGINT,
+    autoIncrement: true,
+  })
   id: number;
 
   @Column(DataTypes.STRING)

@@ -1,6 +1,7 @@
 import { Exclude } from 'class-transformer';
 import { DataTypes } from 'sequelize';
 import { Column, Model, Table } from 'sequelize-typescript';
+import { Role } from './enum/roles.enum';
 
 @Table({
   tableName: 'users',
@@ -8,7 +9,11 @@ import { Column, Model, Table } from 'sequelize-typescript';
   updatedAt: 'updated_at',
 })
 export class User extends Model {
-  @Column({ primaryKey: true, type: DataTypes.BIGINT, autoIncrement: true })
+  @Column({
+    primaryKey: true,
+    type: DataTypes.BIGINT,
+    autoIncrement: true,
+  })
   id: number;
 
   @Column(DataTypes.STRING)
@@ -21,7 +26,7 @@ export class User extends Model {
   password: string;
 
   @Column(DataTypes.STRING)
-  role: string;
+  role: Role;
 
   @Column(DataTypes.DATE)
   created_at: Date;

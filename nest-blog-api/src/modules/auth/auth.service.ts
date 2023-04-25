@@ -1,14 +1,8 @@
-import {
-  HttpException,
-  HttpStatus,
-  Inject,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
-import { RegisterDTO } from './dto/register.dto';
 import * as bcrypt from 'bcrypt';
+import { User } from '../user/user.model';
 
 @Injectable()
 export class AuthService {
@@ -17,7 +11,7 @@ export class AuthService {
     @Inject(JwtService) private readonly jwtService: JwtService,
   ) {}
 
-  async login(email: string, password: string): Promise<string> {
+  async login(email: string, password: string): Promise<Array<User | string>> {
     const user = await this.userService.findByEmail(email);
 
     if (!user) {
@@ -28,7 +22,9 @@ export class AuthService {
       throw new UnauthorizedException();
     }
 
-    return await this.issueToken(user.id, email);
+    const token = await this.issueToken(user.id, email);
+
+    return [user, token];
   }
 
   async issueToken(sub: string | number, username: string): Promise<string> {

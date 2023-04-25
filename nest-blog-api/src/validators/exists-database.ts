@@ -17,14 +17,11 @@ export class ExistsDatabase implements ValidatorConstraintInterface {
     value: any,
     validationArguments?: ValidationArguments,
   ): Promise<boolean> {
-    const modelClass = validationArguments.constraints[0]; //Sequelize model class
-    const column =
-      (validationArguments.constraints[1] as string) ||
-      validationArguments.property; //Column to query from
+    const [modelClass, column] = validationArguments.constraints;
 
     const model = await this.sequelize.getRepository(modelClass).findOne({
       where: {
-        [column]: value,
+        [column || validationArguments.property]: value,
       },
     });
 

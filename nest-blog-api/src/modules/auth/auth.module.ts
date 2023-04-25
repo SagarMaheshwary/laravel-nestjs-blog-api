@@ -8,12 +8,6 @@ import { ExistsDatabase } from 'src/validators/exists-database';
 import { UniqueDatabase } from 'src/validators/unique-database';
 
 @Module({
-  providers: [
-    AuthService,
-    ExistsDatabase, //Adding to providers so nest can inject sequelize
-    UniqueDatabase, //Adding to providers so nest can inject sequelize
-  ],
-  controllers: [AuthController],
   imports: [
     UserModule,
     JwtModule.registerAsync({
@@ -29,5 +23,11 @@ import { UniqueDatabase } from 'src/validators/unique-database';
       }),
     }),
   ],
+  providers: [
+    AuthService,
+    ExistsDatabase, //Adding to providers so nest can inject sequelize
+    UniqueDatabase, //Adding to providers so nest can inject sequelize
+  ],
+  controllers: [AuthController],
 })
 export class AuthModule {}
