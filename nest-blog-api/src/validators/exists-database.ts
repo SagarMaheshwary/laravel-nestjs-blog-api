@@ -1,17 +1,18 @@
-import { InjectConnection } from '@nestjs/sequelize';
+import { Inject } from '@nestjs/common';
 import {
   ValidationArguments,
   ValidatorConstraint,
   ValidatorConstraintInterface,
 } from 'class-validator';
 import { Sequelize } from 'sequelize-typescript';
+import { SEQUELIZE } from 'src/constants/sequelize';
 
 @ValidatorConstraint({
   name: 'ExistsDatabase',
   async: true,
 })
 export class ExistsDatabase implements ValidatorConstraintInterface {
-  constructor(@InjectConnection() private readonly sequelize: Sequelize) {}
+  constructor(@Inject(SEQUELIZE) private readonly sequelize: Sequelize) {}
 
   async validate(
     value: any,

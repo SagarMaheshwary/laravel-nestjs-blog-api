@@ -1,4 +1,4 @@
-import { Controller, Get, Inject, UseGuards } from '@nestjs/common';
+import { Controller, Get, Inject, Query, UseGuards } from '@nestjs/common';
 import { Roles } from 'src/modules/auth/decorators/roles.decorator';
 import { RolesGuard } from 'src/modules/auth/guards/roles.guard';
 import { CategoryService } from 'src/modules/category/category.service';
@@ -13,7 +13,7 @@ export class CategoryController {
   ) {}
 
   @Get()
-  index() {
-    return this.categoryService.paginated();
+  index(@Query('page') page: number, @Query('limit') limit: number) {
+    return this.categoryService.paginated(page, limit);
   }
 }

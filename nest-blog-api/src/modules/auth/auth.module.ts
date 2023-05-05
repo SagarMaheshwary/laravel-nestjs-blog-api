@@ -6,6 +6,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ExistsDatabase } from 'src/validators/exists-database';
 import { UniqueDatabase } from 'src/validators/unique-database';
+import { DatabaseModule } from '../database/database.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { UniqueDatabase } from 'src/validators/unique-database';
         },
       }),
     }),
+    DatabaseModule,
   ],
   providers: [
     AuthService,

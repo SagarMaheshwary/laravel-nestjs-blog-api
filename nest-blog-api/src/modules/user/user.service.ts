@@ -1,19 +1,19 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/sequelize';
 import { User } from './user.model';
 import { CreateUserDTO } from './dto/create-user.dto';
 import * as bcrypt from 'bcrypt';
 import { ConfigService } from '@nestjs/config';
+import { USER_REPOSITORY } from 'src/constants/sequelize';
 
 @Injectable()
 export class UserService {
   constructor(
-    @InjectModel(User) private readonly userModel: typeof User,
+    @Inject(USER_REPOSITORY) private readonly userRepository: typeof User,
     @Inject(ConfigService) private readonly configService: ConfigService,
   ) {}
 
   async findOne(id: number): Promise<User> {
-    return await this.userModel.findOne({
+    return await this.userRepository.findOne({
       where: {
         id,
       },
@@ -21,7 +21,7 @@ export class UserService {
   }
 
   async findByEmail(email: string): Promise<User> {
-    return await this.userModel.findOne({
+    return await this.userRepository.findOne({
       where: {
         email,
       },
@@ -35,7 +35,7 @@ export class UserService {
     );
 
     console.time('QUERY');
-    const res = await this.userModel.create({
+    const res = await this.userRepository.create({
       name: user.name,
       email: user.email,
       password,

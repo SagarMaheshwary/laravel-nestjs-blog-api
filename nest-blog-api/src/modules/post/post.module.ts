@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { PostService } from './post.service';
-import { SequelizeModule } from '@nestjs/sequelize';
-import { Post } from './post.model';
+import { DatabaseModule } from '../database/database.module';
+import { postProviders } from './post.providers';
 
 @Module({
-  imports: [SequelizeModule.forFeature([Post])],
-  providers: [PostService],
+  imports: [DatabaseModule],
+  providers: [PostService, ...postProviders],
   exports: [PostService],
 })
 export class PostModule {}
