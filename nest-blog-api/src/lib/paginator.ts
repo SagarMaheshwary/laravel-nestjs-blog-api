@@ -27,10 +27,10 @@ export class Paginator {
       rows,
       count,
       pages,
-      perPage: this.perPage,
-      currentPage: this.currentPage,
-      prevPage: this.getPrevPage(),
-      nextPage: this.getNextPage(pages),
+      per_page: this.perPage,
+      current_page: this.currentPage,
+      prev_page: this.getPrevPage(),
+      next_page: this.getNextPage(pages),
     };
   }
 

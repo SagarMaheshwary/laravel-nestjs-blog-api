@@ -18,6 +18,11 @@ export class ExistsDatabase implements ValidatorConstraintInterface {
     value: any,
     validationArguments?: ValidationArguments,
   ): Promise<boolean> {
+    //Fail validation if property does not have any value.
+    if (!value) {
+      return true;
+    }
+
     const [modelClass, column] = validationArguments.constraints;
 
     const model = await this.sequelize.getRepository(modelClass).findOne({

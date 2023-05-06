@@ -18,6 +18,11 @@ export class UniqueDatabase implements ValidatorConstraintInterface {
     value: any,
     validationArguments?: ValidationArguments,
   ): Promise<boolean> {
+    //Fail validation if property does not have any value.
+    if (!value) {
+      return true;
+    }
+
     const modelClass = validationArguments.constraints[0]; //Sequelize model class
     const column =
       (validationArguments.constraints[1] as string) ||

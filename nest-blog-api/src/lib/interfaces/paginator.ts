@@ -4,8 +4,8 @@ export interface Paginator {
   rows: Model<any, any>[];
   count: number;
   pages: number;
-  perPage: number;
-  currentPage: number;
-  prevPage: number | null;
-  nextPage: number | null;
+  per_page: number;
+  current_page: number;
+  prev_page: number | null;
+  next_page: number | null;
 }
