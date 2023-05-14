@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker';
 import { QueryInterface, Sequelize, QueryTypes } from 'sequelize';
 import { Category } from 'src/modules/category/category.model';
-import { Post } from 'src/modules/post/post.model';
+import { Post } from 'src/modules/post/models/post.model';
 import { User } from 'src/modules/user/user.model';
 
 const table = 'posts';

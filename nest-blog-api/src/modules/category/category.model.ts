@@ -1,5 +1,7 @@
 import { DataTypes } from 'sequelize';
-import { Column, Model, Table } from 'sequelize-typescript';
+import { BelongsToMany, Column, Model, Table } from 'sequelize-typescript';
+import { Post } from '../post/models/post.model';
+import { PostCategory } from '../post/models/post-category.model';
 
 @Table({
   tableName: 'categories',
@@ -28,4 +30,7 @@ export class Category extends Model {
 
   @Column(DataTypes.DATE)
   updated_at: Date;
+
+  @BelongsToMany(() => Post, () => PostCategory)
+  posts: Post[];
 }

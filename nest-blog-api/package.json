@@ -35,7 +35,8 @@
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0",
     "sequelize": "^6.30.0",
-    "sequelize-typescript": "^2.1.5"
+    "sequelize-typescript": "^2.1.5",
+    "slugify": "^1.6.6"
   },
   "devDependencies": {
     "@faker-js/faker": "^7.6.0",

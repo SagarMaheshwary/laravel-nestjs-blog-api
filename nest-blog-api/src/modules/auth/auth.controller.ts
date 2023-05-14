@@ -15,6 +15,7 @@ import { RegisterDTO } from './dto/register.dto';
 import { UserService } from '../user/user.service';
 import { User } from './decorators/user.decorator';
 import { Public } from './decorators/public.decorator';
+import { Role } from '../user/enum/roles.enum';
 
 @Controller()
 export class AuthController {
@@ -27,7 +28,7 @@ export class AuthController {
   @Public()
   @HttpCode(HttpStatus.CREATED)
   async register(@Body() registerDTO: RegisterDTO) {
-    registerDTO.role = 'user';
+    registerDTO.role = Role.user;
 
     const user = await this.userService.save(registerDTO);
     const token = await this.authService.issueToken(user.id, user.email);

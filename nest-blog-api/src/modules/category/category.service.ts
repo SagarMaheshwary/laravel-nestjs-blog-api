@@ -16,7 +16,7 @@ export class CategoryService {
     @Inject(SEQUELIZE) private readonly sequelize: Sequelize,
   ) {}
 
-  async paginated(page: number, limit: number): Promise<IPaginator> {
+  async paginated(page: number, perPage: number): Promise<IPaginator> {
     const paginator = new Paginator(
       this.sequelize,
       Category,
@@ -24,8 +24,9 @@ export class CategoryService {
         order: [['id', 'DESC']],
       },
       page,
-      limit,
+      perPage,
     );
+
     return await paginator.paginate();
   }
 
@@ -33,25 +34,22 @@ export class CategoryService {
     return await this.categoryRepository.findByPk(id);
   }
 
-  async save(categoryDTO: CreateCategoryDTO): Promise<Category> {
+  async save(dto: CreateCategoryDTO): Promise<Category> {
     //@TODO: upload image to S3
-    categoryDTO.image = faker.image.abstract();
+    dto.image = faker.image.abstract();
 
     return await this.categoryRepository.create({
-      title: categoryDTO.title,
-      description: categoryDTO.description,
-      image: categoryDTO.image,
+      title: dto.title,
+      description: dto.description,
+      image: dto.image,
     });
   }
 
-  async update(
-    category: Category,
-    categoryDTO: UpdateCategoryDTO,
-  ): Promise<Category> {
-    category.title = categoryDTO.title;
-    category.description = categoryDTO.description;
+  async update(category: Category, dto: UpdateCategoryDTO): Promise<Category> {
+    category.title = dto.title;
+    category.description = dto.description;
 
-    if (categoryDTO.image) {
+    if (dto.image) {
       //@TODO: upload image to S3 and delete existing.
     }
 

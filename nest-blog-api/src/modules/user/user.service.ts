@@ -28,21 +28,17 @@ export class UserService {
     });
   }
 
-  async save(user: CreateUserDTO): Promise<User> {
+  async save(dto: CreateUserDTO): Promise<User> {
     const password = await bcrypt.hash(
-      user.password,
+      dto.password,
       this.configService.get('password.salt_rounds'),
     );
 
-    console.time('QUERY');
-    const res = await this.userRepository.create({
-      name: user.name,
-      email: user.email,
+    return await this.userRepository.create({
+      name: dto.name,
+      email: dto.email,
       password,
-      role: user.role,
+      role: dto.role,
     });
-
-    console.timeEnd('QUERY');
-    return res;
   }
 }

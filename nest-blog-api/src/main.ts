@@ -16,8 +16,8 @@ async function bootstrap() {
 
   app.useGlobalPipes(
     new ValidationPipe({
-      transform: true,
-      whitelist: true,
+      transform: true, // tranform payloads according to their DTOs.
+      whitelist: true, // strip out properties that do not have validation decorators
       errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
       exceptionFactory(errors) {
         let _errors = {};

@@ -2,6 +2,8 @@ import {
   Body,
   Controller,
   Get,
+  HttpCode,
+  HttpStatus,
   Inject,
   Param,
   Post,
@@ -26,27 +28,35 @@ export class CategoryController {
   ) {}
 
   @Get()
-  async index(@Query('page') page: number, @Query('limit') limit: number) {
-    const categories = await this.categoryService.paginated(page, limit);
+  @HttpCode(HttpStatus.OK)
+  async index(@Query('page') page: number, @Query('per_page') perPage: number) {
+    const categories = await this.categoryService.paginated(page, perPage);
 
     return response({ categories });
   }
 
   @Post()
-  async store(@Body() categoryDTO: CreateCategoryDTO) {
-    const category = await this.categoryService.save(categoryDTO);
+  @HttpCode(HttpStatus.CREATED)
+  async store(@Body() dto: CreateCategoryDTO) {
+    const category = await this.categoryService.save(dto);
 
     return response({ category }, 'Created a new category.');
   }
 
+  @Get(':id')
+  @HttpCode(HttpStatus.OK)
+  async show(@Param('id') id: number) {
+    const category = await this.categoryService.findOne(id);
+
+    return response({ category });
+  }
+
   @Put(':id')
-  async update(
-    @Param('id') id: number,
-    @Body() categoryDTO: UpdateCategoryDTO,
-  ) {
+  @HttpCode(HttpStatus.OK)
+  async update(@Param('id') id: number, @Body() dto: UpdateCategoryDTO) {
     const category = await this.categoryService.update(
       await this.categoryService.findOne(id),
-      categoryDTO,
+      dto,
     );
 
     return response({ category }, 'Selected category has been updated.');

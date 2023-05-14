@@ -2,9 +2,10 @@ import { Sequelize } from 'sequelize-typescript';
 import { Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { User } from '../user/user.model';
-import { Post } from '../post/post.model';
 import { Category } from '../category/category.model';
 import { SEQUELIZE } from 'src/constants/sequelize';
+import { Post } from '../post/models/post.model';
+import { PostCategory } from '../post/models/post-category.model';
 
 export const databaseProviders = [
   {
@@ -19,7 +20,7 @@ export const databaseProviders = [
         password: configService.get('database.password'),
         port: configService.get('database.port'),
         schema: configService.get('database.schema'),
-        models: [User, Post, Category],
+        models: [User, Post, Category, PostCategory],
         logging: (sql, timing) => new Logger(Sequelize.name).log(sql),
       });
 

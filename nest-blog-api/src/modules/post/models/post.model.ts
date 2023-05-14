@@ -1,12 +1,20 @@
-import { DataTypes } from 'sequelize';
+import {
+  BelongsToManyAddAssociationsMixin,
+  BelongsToManyGetAssociationsMixin,
+  BelongsToManyRemoveAssociationsMixin,
+  DataTypes,
+} from 'sequelize';
 import {
   BelongsTo,
+  BelongsToMany,
   Column,
   ForeignKey,
   Model,
   Table,
 } from 'sequelize-typescript';
-import { User } from '../user/user.model';
+import { User } from 'src/modules/user/user.model';
+import { Category } from 'src/modules/category/category.model';
+import { PostCategory } from './post-category.model';
 
 @Table({
   tableName: 'posts',
@@ -45,4 +53,11 @@ export class Post extends Model {
 
   @BelongsTo(() => User)
   user: User;
+
+  @BelongsToMany(() => Category, () => PostCategory, 'post_id', 'category_id')
+  categories: Category[];
+
+  public addCategories!: BelongsToManyAddAssociationsMixin<Category, {}>;
+  public removeCategories!: BelongsToManyRemoveAssociationsMixin<Category, {}>;
+  public getCategories!: BelongsToManyGetAssociationsMixin<Category>;
 }

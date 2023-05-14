@@ -1,5 +1,5 @@
 import { POST_REPOSITORY } from 'src/constants/sequelize';
-import { Post } from './post.model';
+import { Post } from './models/post.model';
 
 export const postProviders = [
   {

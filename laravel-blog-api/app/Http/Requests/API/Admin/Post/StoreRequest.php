@@ -27,7 +27,7 @@ class StoreRequest extends FormRequest
     {
         return [
             'title'        => 'required|min:5|max:190|unique:posts', //unique for slug
-            'body'         => 'required|min:500|max:20000',
+            'body'         => 'required|min:100|max:20000',
             'categories'   => ['required', new ValidCategoriesRule($categoryService)],
             'image'        => 'required|image|mimes:jpg,png,bmp|max:1999',
         ];
