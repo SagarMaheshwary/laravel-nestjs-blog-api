@@ -12,7 +12,7 @@ import { Post } from '../post/post.entity';
 @Entity({
   name: 'users',
 })
-export class User {
+export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 

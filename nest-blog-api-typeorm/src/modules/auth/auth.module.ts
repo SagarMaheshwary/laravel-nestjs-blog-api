@@ -6,6 +6,8 @@ import { UserModule } from '../user/user.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UniqueDatabase } from 'src/validators/unique-database';
 import { DatabaseModule } from '../database/database.module';
+import { APP_GUARD } from '@nestjs/core';
+import { AuthGuard } from './guards/auth.guard';
 
 @Module({
   imports: [
@@ -25,6 +27,13 @@ import { DatabaseModule } from '../database/database.module';
     DatabaseModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, UniqueDatabase],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
+    },
+    AuthService,
+    UniqueDatabase,
+  ],
 })
 export class AuthModule {}

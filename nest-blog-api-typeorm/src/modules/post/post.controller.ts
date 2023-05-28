@@ -11,12 +11,14 @@ import {
 import { PostService } from './post.service';
 import { response } from 'src/helpers/common';
 import { Post as PostEntity } from './post.entity';
+import { Public } from '../auth/decorators/public.decorator';
 
 @Controller()
 export class PostController {
   constructor(@Inject(PostService) private readonly postService: PostService) {}
 
   @Get()
+  @Public()
   @HttpCode(HttpStatus.OK)
   async index(
     @Query('page', new DefaultValuePipe(1)) page: number,
@@ -51,7 +53,7 @@ export class PostController {
     });
 
     //@TODO: make it a db function.
-    posts.entities.forEach(
+    posts.items.forEach(
       (post: PostEntity) => (post.body = post.body.substring(0, 300)),
     );
 
@@ -59,6 +61,7 @@ export class PostController {
   }
 
   @Get(':id')
+  @Public()
   @HttpCode(HttpStatus.OK)
   async show(@Param('id') id: number) {
     const post = await this.postService.findOne(id, ['user', 'categories']);

@@ -1,7 +1,7 @@
 import { BaseEntity } from 'typeorm';
 
 export interface IPaginator {
-  entities: BaseEntity[];
+  items: BaseEntity[];
   total: number;
   pages: number;
   per_page: number;

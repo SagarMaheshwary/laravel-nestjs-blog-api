@@ -1,10 +1,11 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CATEGORY_REPOSITORY } from 'src/constants/database';
-import { Repository } from 'typeorm';
+import { FindManyOptions, In, Repository } from 'typeorm';
 import { Category } from './category.entity';
 import { UpdateCategoryDTO } from './dto/update-category.dto';
 import { CreateCategoryDTO } from './dto/create-category.dto';
 import { faker } from '@faker-js/faker';
+import { Paginator } from 'src/lib/paginator';
 
 @Injectable()
 export class CategoryService {
@@ -13,8 +14,19 @@ export class CategoryService {
     private readonly categoryRepository: Repository<Category>,
   ) {}
 
-  async paginated(page: number, perPage: number) {
-    //
+  async paginated(
+    page: number,
+    perPage: number,
+    findOptions: FindManyOptions<Category> = {},
+  ) {
+    const paginator = new Paginator(
+      this.categoryRepository,
+      findOptions,
+      page,
+      perPage,
+    );
+
+    return await paginator.paginate();
   }
 
   async popularByPosts() {
@@ -31,6 +43,14 @@ export class CategoryService {
     return await this.categoryRepository.findOneBy({ id });
   }
 
+  async findMany(ids: number[]) {
+    return await this.categoryRepository.find({
+      where: {
+        id: In(ids),
+      },
+    });
+  }
+
   async save(dto: CreateCategoryDTO): Promise<Category> {
     //@TODO: upload image to S3
     dto.image = faker.image.urlLoremFlickr({ category: 'abstract' });
@@ -42,7 +62,13 @@ export class CategoryService {
     });
   }
 
-  async update(category: Category, dto: UpdateCategoryDTO) {
-    //
+  async update(category: Category, dto: UpdateCategoryDTO): Promise<Category> {
+    category.title = dto.title;
+    category.description = dto.description;
+    //@TODO: upload image to S3.
+    // category.image = dto.image;
+    category.save();
+
+    return category;
   }
 }

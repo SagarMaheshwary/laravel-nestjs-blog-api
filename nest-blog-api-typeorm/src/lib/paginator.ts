@@ -13,13 +13,13 @@ export class Paginator {
     this.findOptions.take = this.perPage;
     this.findOptions.skip = this.page > 1 ? this.perPage * (this.page - 1) : 0;
 
-    const [entities, total] = await this.entityRepository.findAndCount(
+    const [items, total] = await this.entityRepository.findAndCount(
       this.findOptions,
     );
     const pages = Math.ceil(total / this.perPage);
 
     return {
-      entities,
+      items,
       total,
       pages,
       per_page: this.perPage,
@@ -29,11 +29,11 @@ export class Paginator {
     };
   }
 
-  getPrevPage(): number | null {
+  private getPrevPage(): number | null {
     return this.page > 1 ? this.page - 1 : null;
   }
 
-  getNextPage(pages: number): number | null {
+  private getNextPage(pages: number): number | null {
     return this.page >= 1 && pages > this.page ? this.page + 1 : null;
   }
 }

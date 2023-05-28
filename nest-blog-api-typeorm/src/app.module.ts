@@ -7,6 +7,8 @@ import { CategoryModule } from './modules/category/category.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { RouterModule } from './modules/router/router.module';
 import { DatabaseModule } from './modules/database/database.module';
+import { PostModule as AdminPostModule } from './modules/admin/post/post.module';
+import { CategoryModule as AdminCategoryModule } from './modules/admin/category/category.module';
 import config from './config';
 
 @Module({
@@ -23,6 +25,8 @@ import config from './config';
     CategoryModule,
     AuthModule,
     DatabaseModule,
+    AdminPostModule,
+    AdminCategoryModule,
   ],
 })
 export class AppModule {}

@@ -4,6 +4,7 @@ import {
   PrimaryGeneratedColumn,
   ManyToMany,
   JoinTable,
+  BaseEntity,
 } from 'typeorm';
 import { Exclude } from 'class-transformer';
 import { Post } from '../post/post.entity';
@@ -11,7 +12,7 @@ import { Post } from '../post/post.entity';
 @Entity({
   name: 'categories',
 })
-export class Category {
+export class Category extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 

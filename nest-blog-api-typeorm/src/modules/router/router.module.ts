@@ -3,6 +3,8 @@ import { RouterModule as NestRouterModule } from '@nestjs/core';
 import { HomeModule } from '../home/home.module';
 import { AuthModule } from '../auth/auth.module';
 import { PostModule } from '../post/post.module';
+import { PostModule as AdminPostModule } from '../admin/post/post.module';
+import { CategoryModule as AdminCategoryModule } from '../admin/category/category.module';
 
 @Module({
   imports: [
@@ -18,6 +20,19 @@ import { PostModule } from '../post/post.module';
       {
         path: 'posts',
         module: PostModule,
+      },
+      {
+        path: 'admin',
+        children: [
+          {
+            path: 'posts',
+            module: AdminPostModule,
+          },
+          {
+            path: 'categories',
+            module: AdminCategoryModule,
+          },
+        ],
       },
     ]),
   ],

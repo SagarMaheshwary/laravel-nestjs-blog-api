@@ -2,6 +2,7 @@ import { Controller, Get, HttpCode, HttpStatus, Inject } from '@nestjs/common';
 import { PostService } from '../post/post.service';
 import { CategoryService } from '../category/category.service';
 import { response } from 'src/helpers/common';
+import { Public } from '../auth/decorators/public.decorator';
 
 @Controller()
 export class HomeController {
@@ -11,6 +12,7 @@ export class HomeController {
   ) {}
 
   @Get()
+  @Public()
   @HttpCode(HttpStatus.OK)
   async index() {
     const select = {
