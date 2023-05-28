@@ -20,8 +20,8 @@ class HomeController extends Controller
 
     public function index(): JsonResponse
     {
-        $posts = $this->postService->latest(10, [
-            'user:id,name',
+        $posts = $this->postService->latest(15, [
+            'user:id,name,image',
             'categories:id,title,image',
         ]);
 
