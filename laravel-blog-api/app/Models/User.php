@@ -46,6 +46,11 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public const ROLES = [
+        'admin' => 'admin',
+        'user'  => 'user',
+    ];
+
     public function imageUrl(): Attribute
     {
         $urlPrefix = config('filesystems.storage_url');
