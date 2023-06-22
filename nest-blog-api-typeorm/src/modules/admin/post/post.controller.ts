@@ -11,6 +11,7 @@ import {
   Put,
   Query,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { response } from 'src/helpers/common';
 import { CreatePostDTO } from 'src/modules/post/dto/create-post.dto';
@@ -22,6 +23,8 @@ import { Roles } from 'src/modules/auth/decorators/roles.decorator';
 import { Role } from 'src/modules/user/enum/role.enum';
 import { RolesGuard } from 'src/modules/auth/guards/roles.guard';
 import { UpdatePostDTO } from 'src/modules/post/dto/update-post.dto';
+import { RequestContextInterceptor } from 'src/modules/app/request-context.interceptor';
+import { StripContextPipe } from 'src/modules/app/strip-context.pipe';
 
 @UseGuards(RolesGuard)
 @Roles(Role.admin)
@@ -74,7 +77,11 @@ export class PostController {
 
   @Put(':id')
   @HttpCode(HttpStatus.OK)
-  async update(@Param('id') id: number, @Body() dto: UpdatePostDTO) {
+  @UseInterceptors(RequestContextInterceptor)
+  async update(
+    @Param('id') id: number,
+    @Body(StripContextPipe) dto: UpdatePostDTO,
+  ) {
     let post = await this.postService.findOne(id);
     post = await this.postService.update(post, dto);
 

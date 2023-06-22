@@ -11,7 +11,7 @@ export class AuthService {
     @Inject(JwtService) private readonly jwtService: JwtService,
   ) {}
 
-  async login(email: string, password: string): Promise<Array<User | string>> {
+  async login(email: string, password: string): Promise<[User, string]> {
     const user = await this.userService.findByEmail(email);
 
     if (!user) {

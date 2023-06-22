@@ -11,8 +11,11 @@ import {
   Put,
   Query,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { response } from 'src/helpers/common';
+import { RequestContextInterceptor } from 'src/modules/app/request-context.interceptor';
+import { StripContextPipe } from 'src/modules/app/strip-context.pipe';
 import { Roles } from 'src/modules/auth/decorators/roles.decorator';
 import { RolesGuard } from 'src/modules/auth/guards/roles.guard';
 import { CategoryService } from 'src/modules/category/category.service';
@@ -57,7 +60,11 @@ export class CategoryController {
 
   @Put(':id')
   @HttpCode(HttpStatus.OK)
-  async update(@Param('id') id: number, @Body() dto: UpdateCategoryDTO) {
+  @UseInterceptors(RequestContextInterceptor)
+  async update(
+    @Param('id') id: number,
+    @Body(StripContextPipe) dto: UpdateCategoryDTO,
+  ) {
     let category = await this.categoryService.findOne(id);
     category = await this.categoryService.update(category, dto);
 

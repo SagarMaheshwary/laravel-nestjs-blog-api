@@ -8,6 +8,7 @@ import { UniqueDatabase } from 'src/validators/unique-database';
 import { DatabaseModule } from '../database/database.module';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './guards/auth.guard';
+import { ExistsDatabase } from 'src/validators/exists-database';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { AuthGuard } from './guards/auth.guard';
     },
     AuthService,
     UniqueDatabase,
+    ExistsDatabase,
   ],
 })
 export class AuthModule {}

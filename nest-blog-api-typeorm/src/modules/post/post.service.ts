@@ -1,17 +1,12 @@
-import {
-  Inject,
-  Injectable,
-  InternalServerErrorException,
-} from '@nestjs/common';
-import { DATA_SOURCE, POST_REPOSITORY } from 'src/constants/database';
-import { DataSource, FindManyOptions, Repository } from 'typeorm';
+import { Inject, Injectable } from '@nestjs/common';
+import { POST_REPOSITORY } from 'src/constants/database';
+import { FindManyOptions, Repository } from 'typeorm';
 import { Post } from './post.entity';
 import { CreatePostDTO } from './dto/create-post.dto';
 import slugify from 'slugify';
 import { faker } from '@faker-js/faker';
 import { UpdatePostDTO } from './dto/update-post.dto';
 import { Paginator } from 'src/lib/paginator';
-import { Category } from '../category/category.entity';
 import { CategoryService } from '../category/category.service';
 
 @Injectable()

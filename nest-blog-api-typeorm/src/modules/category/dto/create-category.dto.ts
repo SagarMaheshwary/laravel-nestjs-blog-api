@@ -1,8 +1,9 @@
 import { IsDefined, Length, Validate } from 'class-validator';
 import { UniqueDatabase } from 'src/validators/unique-database';
 import { Category } from '../category.entity';
+import { BaseDTO } from 'src/modules/app/dto/base.dto';
 
-export class CreateCategoryDTO {
+export class CreateCategoryDTO extends BaseDTO {
   id?: number;
 
   @IsDefined()
