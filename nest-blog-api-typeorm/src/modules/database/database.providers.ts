@@ -19,7 +19,7 @@ export const databaseProviders = [
         port: configService.get('database.port'),
         schema: configService.get('database.schema'),
         entities: [User, Post, Category],
-        logging: true,
+        logging: Boolean(configService.get('database.logging')),
       });
 
       return dataSource.initialize();
