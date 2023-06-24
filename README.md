@@ -1,4 +1,5 @@
 # LEARNING
+
 Projects created for learning.
 
 <br>
@@ -35,7 +36,7 @@ STORAGE_URL=https://your-bucket-id.s3.amazonaws.com/
 
 ## NEST BLOG API
 
-After cloning the project, cd into nest-blog-api and install project dependencies:
+After cloning the project, cd into **nest-blog-api-typeorm** and install project dependencies:
 
 ```
 npm install
@@ -52,17 +53,80 @@ npm run build
 Start the server for listening to incoming requests:
 
 ```
-npm run start
+npm run start:prod
 ```
 
-To watch for changes in your files, we can do:
+To continue watching for changes, we can do:
 
 ```
 npm run start:dev
 ```
 
 ### MIGRATIONS
-Sequelize does not have ts support for migrations so all the migration files will be read from **dist** directory instead of **src** directory. 
+
+You will first need to create the dist directory using **npm run build** command before running any migrations or seeders because typeorm cli executes the **js** files. Database configuration for the migrations is defined in **src/config/migrations.typeorm.ts**.
+
+Run the below commands to create table with migrations:
+
+```
+npm run migrations:run
+```
+
+Revert migrations: (TypeORM reverts migrations one by one so you will need to run the command multiple times)
+
+```
+npm run migrations:revert
+```
+
+### SEEDERS
+
+TypeORM does not come with data seeding feature so we are using the migrations as seeders using a different configuration defined in **src/config/seeders.typeorm.ts**:
+
+Running seeder migrations:
+
+```
+npm run seeders:run
+```
+
+Undo the seeder migrations:
+
+```
+npm run seeders:revert
+```
+
+## NEST BLOG API (SEQUELIZE)
+
+NOTE: This project is incomplete and will not receive any new changes.
+
+After cloning the project, cd into **nest-blog-api** and install project dependencies:
+
+```
+npm install
+```
+
+Copy **.env.example** to **.env** and add database credentials.
+
+Create project build:
+
+```
+npm run build
+```
+
+Start the server for listening to incoming requests:
+
+```
+npm run start:prod
+```
+
+To continue watching for changes, we can do:
+
+```
+npm run start:dev
+```
+
+### MIGRATIONS
+
+Sequelize does not have ts support for migrations so all the migration files will be read from **dist** directory instead of **src** directory.
 
 When running migrations, we first need to create our project build with **npm run build** or keep watching for changes with **npm run start:dev**.
 
@@ -86,5 +150,10 @@ Revert migrations:
 npx sequelize-cli db:migrate:undo
 ```
 
-Database config specifically used for migrations can be found in **src/config/sequelize.ts** where we can add/update configuration that will be only used for running the migrations. Paths for config, migrations, and seeders are defined in **.sequelizerc** file. 
+Database config specifically used for migrations and seeders can be found in **src/config/sequelize.ts** where we can add/update configuration that will be only used for running the migrations. Paths for config, migrations, and seeders are defined in **.sequelizerc** file.
 
+### SEEDERS
+
+You can use the below command to run all the seeders:
+
+npx sequelize-cli db:seed:all
