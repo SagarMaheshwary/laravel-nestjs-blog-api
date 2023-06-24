@@ -5,8 +5,8 @@ import {
   TableForeignKey,
 } from 'typeorm';
 
-export class CreatePostsTable1687537500499 implements MigrationInterface {
-  private tableName = 'posts';
+export class CreateCommentsTable1687597541599 implements MigrationInterface {
+  private tableName = 'comments';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
@@ -20,33 +20,26 @@ export class CreatePostsTable1687537500499 implements MigrationInterface {
             isGenerated: true,
           },
           {
-            name: 'slug',
-            type: 'varchar',
-            length: '255',
-            isNullable: false,
-            isUnique: true,
-          },
-          {
-            name: 'title',
-            type: 'varchar',
-            length: '255',
-            isNullable: false,
-          },
-          {
-            name: 'body',
-            type: 'text',
-            isNullable: false,
-          },
-          {
-            name: 'image',
-            type: 'varchar',
-            length: '250',
-            isNullable: false,
+            name: 'parent_id',
+            type: 'bigint',
+            unsigned: true,
+            isNullable: true,
           },
           {
             name: 'user_id',
             type: 'bigint',
             unsigned: true,
+            isNullable: false,
+          },
+          {
+            name: 'post_id',
+            type: 'bigint',
+            unsigned: true,
+            isNullable: false,
+          },
+          {
+            name: 'body',
+            type: 'text',
             isNullable: false,
           },
           {
@@ -63,14 +56,23 @@ export class CreatePostsTable1687537500499 implements MigrationInterface {
       }),
     );
 
-    await queryRunner.createForeignKey(
-      this.tableName,
+    await queryRunner.createForeignKeys(this.tableName, [
+      new TableForeignKey({
+        columnNames: ['parent_id'],
+        referencedColumnNames: ['id'],
+        referencedTableName: this.tableName,
+      }),
       new TableForeignKey({
         columnNames: ['user_id'],
         referencedColumnNames: ['id'],
         referencedTableName: 'users',
       }),
-    );
+      new TableForeignKey({
+        columnNames: ['post_id'],
+        referencedColumnNames: ['id'],
+        referencedTableName: 'posts',
+      }),
+    ]);
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {

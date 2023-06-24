@@ -1,11 +1,13 @@
 import { DataSource } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
 import { config as configEnv } from 'dotenv';
-import config from 'src/config';
-import { CreateUsersTable1687456597236 } from './migrations/1687456597236-create-users-table';
-import { CreatePostsTable1687537500499 } from './migrations/1687537500499-create-posts-table';
-import { CreateCategoryTable1687538446799 } from './migrations/1687538446799-create-category-table';
-import { CreatePostCategoryTable1687539188318 } from './migrations/1687539188318-create-post-category-table';
+import config from '.';
+import { CreateUsersTable1687456597236 } from 'src/database/migrations/1687456597236-create-users-table';
+import { CreatePostsTable1687537500499 } from 'src/database/migrations/1687537500499-create-posts-table';
+import { CreateCategoryTable1687538446799 } from 'src/database/migrations/1687538446799-create-category-table';
+import { CreatePostCategoryTable1687539188318 } from 'src/database/migrations/1687539188318-create-post-category-table';
+import { CreateCommentsTable1687597541599 } from 'src/database/migrations/1687597541599-create-comments-table';
+import { AddImageColumnToUsersTable1687598457620 } from 'src/database/migrations/1687598457620-add-image-column-to-users-table';
 
 /**
  * CONFIG FILE USED WHEN RUNNING THE MIGRATIONS
@@ -15,8 +17,8 @@ import { CreatePostCategoryTable1687539188318 } from './migrations/1687539188318
  * npx typeorm migrations:create src/database/migrations/create-users-table
  *
  * Commands for running the migrations:
- * npx typeorm migration:run -d dist/database/typeorm.config.js
- * npx typeorm migration:revert -d dist/database/typeorm.config.js
+ * npx typeorm migration:run -d dist/config/migrations.typeorm.js
+ * npx typeorm migration:revert -d dist/config/migrations.typeorm.js
  */
 
 configEnv({
@@ -39,6 +41,8 @@ export default new DataSource({
     CreatePostsTable1687537500499,
     CreateCategoryTable1687538446799,
     CreatePostCategoryTable1687539188318,
+    CreateCommentsTable1687597541599,
+    AddImageColumnToUsersTable1687598457620,
   ],
   logging: Boolean(configService.get('database.logging')),
 });

@@ -8,7 +8,7 @@ import {
 export class CreatePostCategoryTable1687539188318
   implements MigrationInterface
 {
-  private tableName: string = 'post_category';
+  private tableName = 'post_category';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
