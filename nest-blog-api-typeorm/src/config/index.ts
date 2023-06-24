@@ -1,4 +1,4 @@
-import { getEnv } from "src/helpers/common";
+import { getEnv } from 'src/helpers/common';
 
 export default () => ({
   app: {
@@ -16,6 +16,7 @@ export default () => ({
     port: Number(getEnv('DB_PORT')),
     schema: getEnv('DB_SCHEMA'),
     logging: JSON.parse(getEnv('DB_LOGGING')),
+    seedersTable: getEnv('DB_SEEDERS_TABLE', 'seeders'),
   },
   jwt: {
     secret: getEnv('JWT_SECRET'),
