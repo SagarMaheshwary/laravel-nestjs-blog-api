@@ -4,6 +4,7 @@ import { User } from '../user/user.entity';
 import { DATA_SOURCE } from 'src/constants/database';
 import { Post } from '../post/post.entity';
 import { Category } from '../category/category.entity';
+import { Comment } from '../comment/comment.entity';
 
 export const databaseProviders = [
   {
@@ -18,7 +19,7 @@ export const databaseProviders = [
         password: configService.get('database.password'),
         port: configService.get('database.port'),
         schema: configService.get('database.schema'),
-        entities: [User, Post, Category],
+        entities: [User, Post, Category, Comment],
         logging: Boolean(configService.get('database.logging')),
       });
 

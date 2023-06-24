@@ -7,6 +7,8 @@ import { PostsTableSeeder1687599711477 } from 'src/database/seeders/168759971147
 import { User } from 'src/modules/user/user.entity';
 import { Post } from 'src/modules/post/post.entity';
 import { Category } from 'src/modules/category/category.entity';
+import { CommentsTableSeeder1687629187803 } from 'src/database/seeders/1687629187803-comments-table-seeder';
+import { Comment } from 'src/modules/comment/comment.entity';
 
 /**
  * CONFIG FILE USED WHEN RUNNING THE SEEDS (WE BASICALLY USE MIGRATIONS TO ACHEIVE THAT)
@@ -33,10 +35,11 @@ export default new DataSource({
   schema: config().database.schema,
   migrationsTableName: config().database.seedersTable,
   logging: Boolean(config().database.logging),
-  entities: [User, Post, Category],
+  entities: [User, Post, Category, Comment],
   migrations: [
     UsersTableSeeder1687599477113,
     CategoriesTableSeeder1687599705593,
     PostsTableSeeder1687599711477,
+    CommentsTableSeeder1687629187803,
   ],
 });

@@ -8,6 +8,7 @@ import {
 import { Exclude } from 'class-transformer';
 import { Role } from './enum/role.enum';
 import { Post } from '../post/post.entity';
+import { Comment } from '../comment/comment.entity';
 
 @Entity({
   name: 'users',
@@ -37,4 +38,7 @@ export class User extends BaseEntity {
 
   @OneToMany(() => Post, (post) => post.user)
   posts: Post[];
+
+  @OneToMany(() => Comment, (comment) => comment.user)
+  comments: Comment[];
 }

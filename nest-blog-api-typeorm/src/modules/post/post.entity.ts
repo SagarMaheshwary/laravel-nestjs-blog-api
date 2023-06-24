@@ -7,10 +7,12 @@ import {
   ManyToMany,
   JoinTable,
   BaseEntity,
+  OneToMany,
 } from 'typeorm';
 import { Exclude } from 'class-transformer';
 import { User } from '../user/user.entity';
 import { Category } from '../category/category.entity';
+import { Comment } from '../comment/comment.entity';
 
 @Entity({
   name: 'posts',
@@ -56,4 +58,7 @@ export class Post extends BaseEntity {
     },
   })
   categories: Category[];
+
+  @OneToMany(() => Comment, (comment) => comment.post)
+  comments: Comment[];
 }
