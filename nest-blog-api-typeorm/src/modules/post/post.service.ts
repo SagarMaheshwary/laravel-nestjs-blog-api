@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { POST_REPOSITORY } from 'src/constants/database';
+import { LIKE_REPOSITORY, POST_REPOSITORY } from 'src/constants/database';
 import { FindManyOptions, Repository } from 'typeorm';
 import { Post } from './post.entity';
 import { CreatePostDTO } from './dto/create-post.dto';
@@ -8,12 +8,14 @@ import { faker } from '@faker-js/faker';
 import { UpdatePostDTO } from './dto/update-post.dto';
 import { Paginator } from 'src/lib/paginator';
 import { CategoryService } from '../category/category.service';
+import { Like } from '../like/like.entity';
 
 @Injectable()
 export class PostService {
   constructor(
     @Inject(CategoryService) private readonly categoryService: CategoryService,
     @Inject(POST_REPOSITORY) private readonly postRepository: Repository<Post>,
+    @Inject(LIKE_REPOSITORY) private readonly likeRepository: Repository<Like>,
   ) {}
 
   async paginated(
@@ -93,5 +95,52 @@ export class PostService {
 
     post.categories = categories;
     return await post.save();
+  }
+
+  async likes(id: number): Promise<Like[]> {
+    const post = await this.postRepository.findOne({
+      select: {
+        id: true,
+        likes: {
+          id: true,
+          likeable_id: true,
+          user: {
+            id: true,
+            name: true,
+          },
+        },
+      },
+      relations: {
+        likes: {
+          user: true,
+        },
+      },
+      where: {
+        id,
+        likes: {
+          likeable_type: Post.name,
+        },
+      },
+    });
+
+    return post?.likes || [];
+  }
+
+  async toggleLike(id: number, userId: number): Promise<boolean> {
+    const likeAttributes = {
+      likeable_id: id,
+      likeable_type: Post.name,
+      user_id: userId,
+    };
+
+    const like = await this.likeRepository.findOneBy(likeAttributes);
+
+    if (like) {
+      await like.remove();
+
+      return false;
+    }
+
+    return Boolean(await this.likeRepository.save(likeAttributes));
   }
 }

@@ -130,7 +130,7 @@ export class CommentService {
     return await comment.save();
   }
 
-  async likes(id: number) {
+  async likes(id: number): Promise<Like[]> {
     const comment = await this.commentRepository.findOne({
       select: {
         id: true,
@@ -151,17 +151,17 @@ export class CommentService {
         },
       },
       where: {
-        id: id,
+        id,
         likes: {
           likeable_type: Comment.name,
         },
       },
     });
 
-    return comment;
+    return comment?.likes || [];
   }
 
-  async toggleLike(id: number, userId: number) {
+  async toggleLike(id: number, userId: number): Promise<boolean> {
     const likeAttributes = {
       likeable_id: id,
       likeable_type: Comment.name,

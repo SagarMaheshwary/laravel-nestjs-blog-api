@@ -96,9 +96,9 @@ export class CommentController {
   @Public()
   @HttpCode(HttpStatus.OK)
   async likes(@Param('commentId') commentId: number) {
-    const comment = await this.commentService.likes(commentId);
+    const likes = await this.commentService.likes(commentId);
 
-    return response({ likes: comment?.likes || [] });
+    return response({ likes });
   }
 
   @Post(':commentId/likes')

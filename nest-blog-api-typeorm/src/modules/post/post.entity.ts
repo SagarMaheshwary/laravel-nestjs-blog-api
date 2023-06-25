@@ -13,6 +13,7 @@ import { Exclude } from 'class-transformer';
 import { User } from '../user/user.entity';
 import { Category } from '../category/category.entity';
 import { Comment } from '../comment/comment.entity';
+import { Like } from '../like/like.entity';
 
 @Entity({
   name: 'posts',
@@ -61,4 +62,7 @@ export class Post extends BaseEntity {
 
   @OneToMany(() => Comment, (comment) => comment.post)
   comments: Comment[];
+
+  @OneToMany(() => Like, (like) => like.post)
+  likes: Like[];
 }

@@ -8,6 +8,7 @@ import {
 } from 'typeorm';
 import { Comment } from '../comment/comment.entity';
 import { User } from '../user/user.entity';
+import { Post } from '../post/post.entity';
 
 @Entity({
   name: 'likes',
@@ -27,7 +28,11 @@ export class Like extends BaseEntity {
 
   @ManyToOne(() => Comment, (comment) => comment.likes)
   @JoinColumn({ name: 'likeable_id' })
-  comment: Comment[];
+  comment: Comment;
+
+  @ManyToOne(() => Post, (post) => post.likes)
+  @JoinColumn({ name: 'likeable_id' })
+  post: Post;
 
   @ManyToOne(() => User, (user) => user.likes)
   @JoinColumn({ name: 'user_id' })
