@@ -7,6 +7,7 @@ import { CreateCategoryTable1687538446799 } from 'src/database/migrations/168753
 import { CreatePostCategoryTable1687539188318 } from 'src/database/migrations/1687539188318-create-post-category-table';
 import { CreateCommentsTable1687597541599 } from 'src/database/migrations/1687597541599-create-comments-table';
 import { AddImageColumnToUsersTable1687598457620 } from 'src/database/migrations/1687598457620-add-image-column-to-users-table';
+import { CreateLikesTable1687695288665 } from 'src/database/migrations/1687695288665-create-likes-table';
 
 /**
  * CONFIG FILE USED WHEN RUNNING THE MIGRATIONS
@@ -39,5 +40,6 @@ export default new DataSource({
     CreatePostCategoryTable1687539188318,
     CreateCommentsTable1687597541599,
     AddImageColumnToUsersTable1687598457620,
+    CreateLikesTable1687695288665,
   ],
 });

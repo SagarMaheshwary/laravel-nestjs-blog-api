@@ -1,17 +1,20 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { COMMENT_REPOSITORY } from 'src/constants/database';
+import { COMMENT_REPOSITORY, LIKE_REPOSITORY } from 'src/constants/database';
 import { FindManyOptions, IsNull, Repository } from 'typeorm';
 import { Comment } from './comment.entity';
 import { Paginator } from 'src/lib/paginator';
 import { UpdateCommentDTO } from './dto/update-comment.dto';
 import { CreateCommentDTO } from './dto/create-comment.dto';
 import { IPaginator } from 'src/lib/interfaces/paginator';
+import { Like } from '../like/like.entity';
 
 @Injectable()
 export class CommentService {
   constructor(
     @Inject(COMMENT_REPOSITORY)
     private readonly commentRepository: Repository<Comment>,
+    @Inject(LIKE_REPOSITORY)
+    private readonly likeRepository: Repository<Like>,
   ) {}
 
   async paginatedByPost(
@@ -64,7 +67,7 @@ export class CommentService {
   }
 
   async paginatedReplies(
-    commentId: number,
+    id: number,
     page: number,
     perPage: number,
   ): Promise<IPaginator> {
@@ -85,7 +88,7 @@ export class CommentService {
         },
       },
       where: {
-        parent_id: commentId,
+        parent_id: id,
       },
       relations: ['user'],
     };
@@ -123,7 +126,57 @@ export class CommentService {
 
   async update(comment: Comment, dto: UpdateCommentDTO): Promise<Comment> {
     comment.body = dto.body;
+
     return await comment.save();
+  }
+
+  async likes(id: number) {
+    const comment = await this.commentRepository.findOne({
+      select: {
+        id: true,
+        likes: {
+          id: true,
+          likeable_id: true,
+          user_id: true,
+          user: {
+            id: true,
+            name: true,
+            image: true,
+          },
+        },
+      },
+      relations: {
+        likes: {
+          user: true,
+        },
+      },
+      where: {
+        id: id,
+        likes: {
+          likeable_type: Comment.name,
+        },
+      },
+    });
+
+    return comment;
+  }
+
+  async toggleLike(id: number, userId: number) {
+    const likeAttributes = {
+      likeable_id: id,
+      likeable_type: Comment.name,
+      user_id: userId,
+    };
+
+    const like = await this.likeRepository.findOneBy(likeAttributes);
+
+    if (like) {
+      await like.remove();
+
+      return false;
+    }
+
+    return Boolean(await this.likeRepository.save(likeAttributes));
   }
 
   private async getRepliesCount(parentIds: number[] = []): Promise<any[]> {

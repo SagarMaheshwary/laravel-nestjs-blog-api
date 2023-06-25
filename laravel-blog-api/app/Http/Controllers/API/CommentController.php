@@ -70,8 +70,8 @@ class CommentController extends Controller
 
     public function likes(int $postId, int $commentId): JsonResponse
     {
-        $post = $this->commentService->find($commentId, $postId);
-        $likes = $this->commentService->likes($post, ['user:id,name']);
+        $comment = $this->commentService->find($commentId, $postId);
+        $likes = $this->commentService->likes($comment, ['user:id,name']);
 
         return jsonResponse([
             'likes' => LikeResource::collection($likes),
@@ -80,8 +80,8 @@ class CommentController extends Controller
 
     public function toggleLike(int $postId, $commentId): JsonResponse
     {
-        $post = $this->commentService->find($commentId, $postId);
-        $liked = $this->commentService->toggleLike($post, Auth::id());
+        $comment = $this->commentService->find($commentId, $postId);
+        $liked = $this->commentService->toggleLike($comment, Auth::id());
 
         return jsonResponse([
             'liked' => $liked,

@@ -1,7 +1,7 @@
 import * as path from 'path';
 
 export const getEnv = (key: string, defaultVal: any = null) => {
-  return process.env[key] ?? defaultVal;
+  return process.env[key] || defaultVal;
 };
 
 export const getRelativePath = (file: string, extension: boolean = false) => {

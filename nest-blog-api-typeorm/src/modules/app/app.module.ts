@@ -11,6 +11,7 @@ import { PostModule as AdminPostModule } from '../admin/post/post.module';
 import { CategoryModule as AdminCategoryModule } from '../admin/category/category.module';
 import config from '../../config';
 import { CommentModule } from '../comment/comment.module';
+import { LikeModule } from '../like/like.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { CommentModule } from '../comment/comment.module';
     PostModule,
     CategoryModule,
     CommentModule,
+    LikeModule,
     AuthModule,
     DatabaseModule,
     AdminPostModule,

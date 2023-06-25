@@ -91,4 +91,24 @@ export class CommentController {
 
     return response({ comment }, 'Selected comment has been updated.');
   }
+
+  @Get(':commentId/likes')
+  @Public()
+  @HttpCode(HttpStatus.OK)
+  async likes(@Param('commentId') commentId: number) {
+    const comment = await this.commentService.likes(commentId);
+
+    return response({ likes: comment?.likes || [] });
+  }
+
+  @Post(':commentId/likes')
+  @HttpCode(HttpStatus.OK)
+  async toggleLikes(
+    @Param('commentId') commentId: number,
+    @User() user: UserEntity,
+  ) {
+    const liked = await this.commentService.toggleLike(commentId, user.id);
+
+    return response({ liked });
+  }
 }

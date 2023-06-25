@@ -9,6 +9,7 @@ import {
 } from 'typeorm';
 import { User } from '../user/user.entity';
 import { Post } from '../post/post.entity';
+import { Like } from '../like/like.entity';
 
 @Entity({
   name: 'comments',
@@ -50,6 +51,9 @@ export class Comment extends BaseEntity {
   @ManyToOne(() => Post, (post) => post.comments)
   @JoinColumn({ name: 'post_id' })
   post: Post;
+
+  @OneToMany(() => Like, (like) => like.comment)
+  likes: Like[];
 
   replies_count?: number;
 }
