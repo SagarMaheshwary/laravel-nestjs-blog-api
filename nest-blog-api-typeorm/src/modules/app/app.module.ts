@@ -10,6 +10,7 @@ import { DatabaseModule } from '../database/database.module';
 import { PostModule as AdminPostModule } from '../admin/post/post.module';
 import { CategoryModule as AdminCategoryModule } from '../admin/category/category.module';
 import config from '../../config';
+import { CommentModule } from '../comment/comment.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import config from '../../config';
     UserModule,
     PostModule,
     CategoryModule,
+    CommentModule,
     AuthModule,
     DatabaseModule,
     AdminPostModule,

@@ -13,6 +13,7 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
+import { CURRENT_PAGE, PER_PAGE } from 'src/constants/common';
 import { response } from 'src/helpers/common';
 import { RequestContextInterceptor } from 'src/modules/app/request-context.interceptor';
 import { StripContextPipe } from 'src/modules/app/strip-context.pipe';
@@ -34,8 +35,8 @@ export class CategoryController {
   @Get()
   @HttpCode(HttpStatus.OK)
   async index(
-    @Query('page', new DefaultValuePipe(1)) page: number,
-    @Query('per_page', new DefaultValuePipe(12)) perPage: number,
+    @Query('page', new DefaultValuePipe(CURRENT_PAGE)) page: number,
+    @Query('per_page', new DefaultValuePipe(PER_PAGE)) perPage: number,
   ) {
     const categories = await this.categoryService.paginated(page, perPage);
 

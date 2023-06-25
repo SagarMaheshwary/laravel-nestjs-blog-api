@@ -31,6 +31,9 @@ export class User extends BaseEntity {
   role: Role;
 
   @Column()
+  image: string;
+
+  @Column()
   created_at: Date;
 
   @Column()

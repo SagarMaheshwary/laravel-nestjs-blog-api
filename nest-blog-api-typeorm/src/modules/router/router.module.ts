@@ -5,12 +5,13 @@ import { AuthModule } from '../auth/auth.module';
 import { PostModule } from '../post/post.module';
 import { PostModule as AdminPostModule } from '../admin/post/post.module';
 import { CategoryModule as AdminCategoryModule } from '../admin/category/category.module';
+import { CommentModule } from '../comment/comment.module';
 
 @Module({
   imports: [
     NestRouterModule.register([
       {
-        path: '/home',
+        path: 'home',
         module: HomeModule,
       },
       {
@@ -20,6 +21,12 @@ import { CategoryModule as AdminCategoryModule } from '../admin/category/categor
       {
         path: 'posts',
         module: PostModule,
+        children: [
+          {
+            path: ':postId/comments',
+            module: CommentModule,
+          },
+        ],
       },
       {
         path: 'admin',

@@ -12,6 +12,7 @@ import { PostService } from './post.service';
 import { response } from 'src/helpers/common';
 import { Post as PostEntity } from './post.entity';
 import { Public } from '../auth/decorators/public.decorator';
+import { CURRENT_PAGE, PER_PAGE } from 'src/constants/common';
 
 @Controller()
 export class PostController {
@@ -21,8 +22,8 @@ export class PostController {
   @Public()
   @HttpCode(HttpStatus.OK)
   async index(
-    @Query('page', new DefaultValuePipe(1)) page: number,
-    @Query('per_page', new DefaultValuePipe(12)) perPage: number,
+    @Query('page', new DefaultValuePipe(CURRENT_PAGE)) page: number,
+    @Query('per_page', new DefaultValuePipe(PER_PAGE)) perPage: number,
   ) {
     const select = {
       id: true,
@@ -35,7 +36,7 @@ export class PostController {
       user: {
         id: true,
         name: true,
-        // image: true, //@TODO: add image column
+        image: true,
       },
       categories: {
         id: true,

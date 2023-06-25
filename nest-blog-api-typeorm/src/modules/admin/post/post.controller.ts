@@ -25,6 +25,7 @@ import { RolesGuard } from 'src/modules/auth/guards/roles.guard';
 import { UpdatePostDTO } from 'src/modules/post/dto/update-post.dto';
 import { RequestContextInterceptor } from 'src/modules/app/request-context.interceptor';
 import { StripContextPipe } from 'src/modules/app/strip-context.pipe';
+import { CURRENT_PAGE, PER_PAGE } from 'src/constants/common';
 
 @UseGuards(RolesGuard)
 @Roles(Role.admin)
@@ -35,8 +36,8 @@ export class PostController {
   @Get()
   @HttpCode(HttpStatus.OK)
   async index(
-    @Query('page', new DefaultValuePipe(1)) page: number,
-    @Query('per_page', new DefaultValuePipe(12)) perPage: number,
+    @Query('page', new DefaultValuePipe(CURRENT_PAGE)) page: number,
+    @Query('per_page', new DefaultValuePipe(PER_PAGE)) perPage: number,
   ) {
     const posts = await this.postService.paginated(page, perPage, {
       relations: ['categories'],

@@ -26,7 +26,7 @@ export class HomeController {
       user: {
         id: true,
         name: true,
-        // image: true, //@TODO: add image column
+        image: true,
       },
       categories: {
         id: true,
