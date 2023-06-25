@@ -48,7 +48,19 @@ export class CommentService {
       perPage,
     );
 
-    return await paginator.paginate();
+    const response = await paginator.paginate();
+
+    const repliesCount = await this.getRepliesCount(
+      response.items.map((item: Comment) => item.id),
+    );
+
+    response.items.forEach((item: Comment) => {
+      const count = repliesCount.find((count) => count.parent_id == item.id);
+
+      item.replies_count = Number(count?.replies_count || 0);
+    });
+
+    return response;
   }
 
   async paginatedReplies(
@@ -112,5 +124,17 @@ export class CommentService {
   async update(comment: Comment, dto: UpdateCommentDTO): Promise<Comment> {
     comment.body = dto.body;
     return await comment.save();
+  }
+
+  private async getRepliesCount(parentIds: number[] = []): Promise<any[]> {
+    return await this.commentRepository
+      .createQueryBuilder('comment')
+      .select('parent_id', 'parent_id')
+      .addSelect('COUNT(id)', 'replies_count')
+      .where('parent_id in (:...parent_ids)', {
+        parent_ids: parentIds,
+      })
+      .groupBy('parent_id')
+      .getRawMany();
   }
 }

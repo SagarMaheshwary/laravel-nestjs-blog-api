@@ -50,4 +50,6 @@ export class Comment extends BaseEntity {
   @ManyToOne(() => Post, (post) => post.comments)
   @JoinColumn({ name: 'post_id' })
   post: Post;
+
+  replies_count?: number;
 }
