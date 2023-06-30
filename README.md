@@ -32,7 +32,7 @@ After adding s3 credentials, you should add the s3 url to .env which we use for 
 STORAGE_URL=https://your-bucket-id.s3.amazonaws.com/
 ```
 
-<br>
+<br><br>
 
 ## NEST BLOG API
 
@@ -66,7 +66,7 @@ npm run start:dev
 
 You will first need to create the dist directory using **npm run build** command before running any migrations or seeders because typeorm cli executes the **js** files. Database configuration for the migrations is defined in **src/config/migrations.typeorm.ts**.
 
-Run the below commands to create table with migrations:
+Now run the below command to execute all the migrations:
 
 ```
 npm run migrations:run
@@ -93,6 +93,33 @@ Undo the seeder migrations:
 ```
 npm run seeders:revert
 ```
+
+### APIS
+
+| URI                           | METHOD | DESCRIPTION                                       |
+| ----------------------------- | ------ | ------------------------------------------------- |
+| /home                         | GET    | Home api that returns latest posts and categories |
+| /auth/login                   | POST   | User login                                        |
+| /auth/register                | POST   | User registration (only user role)                |
+| /auth/profile                 | GET    | Authenticated user's profile                      |
+| /posts                        | GET    | Paginated posts listing                           |
+| /posts/:id                    | GET    | Post details                                      |
+| /posts/likes                  | GET    | Post likes listing                                |
+| /posts/likes                  | POST   | Add/Remove like on a specific post                |
+| /posts/:id/comments           | GET    | Paginated comments listing                        |
+| /posts/:id/comments/:id       | GET    | Paginated comment replies listing                 |
+| /posts/:id/comments/:id/likes | GET    | Comment likes listing                             |
+| /posts/:id/comments/:id/likes | POST   | Add/Remove like on a specific comment             |
+| /admin/categories             | GET    | Paginated categories listing                      |
+| /admin/categories             | POST   | Create category                                   |
+| /admin/categories/:id         | GET    | Category details                                  |
+| /admin/categories/:id         | PUT    | Update category                                   |
+| /admin/posts                  | GET    | Paginated posts listing                           |
+| /admin/posts                  | POST   | Create post                                       |
+| /admin/posts/:id              | GET    | Post details                                      |
+| /admin/posts/:id              | PUT    | Update post                                       |
+
+<br><br>
 
 ## NEST BLOG API (SEQUELIZE)
 
