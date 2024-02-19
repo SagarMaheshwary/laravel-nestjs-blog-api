@@ -6,7 +6,7 @@ Blog API using Laravel and NestJS.
 
 ## LARAVEL BLOG API
 
-### Features
+### FEATURES
 
 - Migrations and Seeders
 - Validation and Custom Validation Rules
@@ -16,6 +16,8 @@ Blog API using Laravel and NestJS.
 - Role Based Admin Panel for Categories and Posts Management
 - S3 Uploads
 - Service classes for Business Logic
+
+### SETUP
 
 After cloning the project, cd into laravel-blog-api and install project dependencies:
 
@@ -47,7 +49,7 @@ STORAGE_URL=https://your-bucket-id.s3.amazonaws.com/
 
 ## NEST BLOG API
 
-### Features
+### FEATURES
 
 - Migrations and Seeders
 - Validation and Custom Validation Classes
@@ -55,6 +57,8 @@ STORAGE_URL=https://your-bucket-id.s3.amazonaws.com/
 - Registration and Authentication
 - Role Based Admin Panel for Categories and Posts Management
 - Docker and Docker Compose
+
+### SETUP
 
 After cloning the project, cd into **nest-blog-api** and install project dependencies:
 
