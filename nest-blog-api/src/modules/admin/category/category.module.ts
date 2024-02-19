@@ -5,5 +5,6 @@ import { CategoryModule as AppCategoryModule } from 'src/modules/category/catego
 @Module({
   imports: [AppCategoryModule],
   controllers: [CategoryController],
+  providers: [],
 })
 export class CategoryModule {}

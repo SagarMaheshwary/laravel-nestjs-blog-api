@@ -1,16 +1,17 @@
 import { Module } from '@nestjs/common';
-import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
-import { UserModule } from '../user/user.module';
+import { AuthService } from './auth.service';
 import { JwtModule } from '@nestjs/jwt';
+import { UserModule } from '../user/user.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { ExistsDatabase } from 'src/validators/exists-database';
 import { UniqueDatabase } from 'src/validators/unique-database';
 import { DatabaseModule } from '../database/database.module';
+import { APP_GUARD } from '@nestjs/core';
+import { AuthGuard } from './guards/auth.guard';
+import { ExistsDatabase } from 'src/validators/exists-database';
 
 @Module({
   imports: [
-    UserModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -23,13 +24,18 @@ import { DatabaseModule } from '../database/database.module';
         },
       }),
     }),
+    UserModule,
     DatabaseModule,
   ],
-  providers: [
-    AuthService,
-    ExistsDatabase, //Adding to providers so nest can inject sequelize
-    UniqueDatabase, //Adding to providers so nest can inject sequelize
-  ],
   controllers: [AuthController],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
+    },
+    AuthService,
+    UniqueDatabase,
+    ExistsDatabase,
+  ],
 })
 export class AuthModule {}

@@ -1,31 +1,25 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { User } from './user.model';
-import { CreateUserDTO } from './dto/create-user.dto';
-import * as bcrypt from 'bcrypt';
 import { ConfigService } from '@nestjs/config';
-import { USER_REPOSITORY } from 'src/constants/sequelize';
+import { User } from './user.entity';
+import { Repository } from 'typeorm';
+import * as bcrypt from 'bcrypt';
+import { CreateUserDTO } from './dto/create-user.dto';
+import { USER_REPOSITORY } from 'src/constants/database';
 
 @Injectable()
 export class UserService {
   constructor(
-    @Inject(USER_REPOSITORY) private readonly userRepository: typeof User,
     @Inject(ConfigService) private readonly configService: ConfigService,
+    @Inject(USER_REPOSITORY)
+    private readonly userRepository: Repository<User>,
   ) {}
 
   async findOne(id: number): Promise<User> {
-    return await this.userRepository.findOne({
-      where: {
-        id,
-      },
-    });
+    return await this.userRepository.findOneBy({ id });
   }
 
   async findByEmail(email: string): Promise<User> {
-    return await this.userRepository.findOne({
-      where: {
-        email,
-      },
-    });
+    return await this.userRepository.findOneBy({ email });
   }
 
   async save(dto: CreateUserDTO): Promise<User> {
@@ -34,11 +28,11 @@ export class UserService {
       this.configService.get('password.salt_rounds'),
     );
 
-    return await this.userRepository.create({
+    return await this.userRepository.save({
       name: dto.name,
       email: dto.email,
-      password,
       role: dto.role,
+      password,
     });
   }
 }

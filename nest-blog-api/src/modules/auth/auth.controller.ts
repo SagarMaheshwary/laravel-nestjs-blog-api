@@ -8,14 +8,14 @@ import {
   Post,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { LoginDTO } from './dto/login.dto';
-import { response } from 'src/helpers/common';
-import { User as UserModel } from '../user/user.model';
-import { RegisterDTO } from './dto/register.dto';
 import { UserService } from '../user/user.service';
-import { User } from './decorators/user.decorator';
 import { Public } from './decorators/public.decorator';
-import { Role } from '../user/enum/roles.enum';
+import { RegisterDTO } from './dto/register.dto';
+import { Role } from '../user/enum/role.enum';
+import { response } from 'src/helpers/common';
+import { LoginDTO } from './dto/login.dto';
+import { User } from './decorators/user.decorator';
+import { User as UserEntity } from '../user/user.entity';
 
 @Controller()
 export class AuthController {
@@ -50,7 +50,7 @@ export class AuthController {
 
   @Get('/profile')
   @HttpCode(HttpStatus.OK)
-  async profile(@User() user: UserModel) {
+  async profile(@User() user: UserEntity) {
     return response({ user });
   }
 }

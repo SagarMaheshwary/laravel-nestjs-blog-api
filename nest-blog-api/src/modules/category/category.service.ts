@@ -1,28 +1,27 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Category } from './category.model';
-import { Paginator } from 'src/lib/paginator';
-import { Paginator as IPaginator } from 'src/lib/interfaces/paginator';
-import { Sequelize } from 'sequelize-typescript';
-import { CATEGORY_REPOSITORY, SEQUELIZE } from 'src/constants/sequelize';
+import { CATEGORY_REPOSITORY } from 'src/constants/database';
+import { FindManyOptions, In, Repository } from 'typeorm';
+import { Category } from './category.entity';
+import { UpdateCategoryDTO } from './dto/update-category.dto';
 import { CreateCategoryDTO } from './dto/create-category.dto';
 import { faker } from '@faker-js/faker';
-import { UpdateCategoryDTO } from './dto/update-category.dto';
+import { Paginator } from 'src/lib/paginator';
 
 @Injectable()
 export class CategoryService {
   constructor(
     @Inject(CATEGORY_REPOSITORY)
-    private readonly categoryRepository: typeof Category,
-    @Inject(SEQUELIZE) private readonly sequelize: Sequelize,
+    private readonly categoryRepository: Repository<Category>,
   ) {}
 
-  async paginated(page: number, perPage: number): Promise<IPaginator> {
+  async paginated(
+    page: number,
+    perPage: number,
+    findOptions: FindManyOptions<Category> = {},
+  ) {
     const paginator = new Paginator(
-      this.sequelize,
-      Category,
-      {
-        order: [['id', 'DESC']],
-      },
+      this.categoryRepository,
+      findOptions,
       page,
       perPage,
     );
@@ -30,15 +29,33 @@ export class CategoryService {
     return await paginator.paginate();
   }
 
+  async popularByPosts() {
+    //@TODO: write the actual query for popular categories.
+    return await this.categoryRepository.find({
+      take: 5,
+      order: {
+        created_at: 'DESC',
+      },
+    });
+  }
+
   async findOne(id: number): Promise<Category> {
-    return await this.categoryRepository.findByPk(id);
+    return await this.categoryRepository.findOneBy({ id });
+  }
+
+  async findMany(ids: number[]) {
+    return await this.categoryRepository.find({
+      where: {
+        id: In(ids),
+      },
+    });
   }
 
   async save(dto: CreateCategoryDTO): Promise<Category> {
     //@TODO: upload image to S3
-    dto.image = faker.image.abstract();
+    dto.image = faker.image.urlLoremFlickr({ category: 'abstract' });
 
-    return await this.categoryRepository.create({
+    return await this.categoryRepository.save({
       title: dto.title,
       description: dto.description,
       image: dto.image,
@@ -48,11 +65,10 @@ export class CategoryService {
   async update(category: Category, dto: UpdateCategoryDTO): Promise<Category> {
     category.title = dto.title;
     category.description = dto.description;
+    //@TODO: upload image to S3.
+    // category.image = dto.image;
+    category.save();
 
-    if (dto.image) {
-      //@TODO: upload image to S3 and delete existing.
-    }
-
-    return await category.save();
+    return category;
   }
 }

@@ -5,7 +5,7 @@ import { categoryProviders } from './category.providers';
 
 @Module({
   imports: [DatabaseModule],
-  providers: [CategoryService, ...categoryProviders],
-  exports: [CategoryService],
+  providers: [...categoryProviders, CategoryService],
+  exports: [...categoryProviders, CategoryService],
 })
 export class CategoryModule {}

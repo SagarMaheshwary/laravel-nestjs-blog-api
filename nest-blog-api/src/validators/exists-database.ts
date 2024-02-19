@@ -4,15 +4,15 @@ import {
   ValidatorConstraint,
   ValidatorConstraintInterface,
 } from 'class-validator';
-import { Sequelize } from 'sequelize-typescript';
-import { SEQUELIZE } from 'src/constants/sequelize';
+import { DATA_SOURCE } from 'src/constants/database';
+import { DataSource, getRepository } from 'typeorm';
 
 @ValidatorConstraint({
   name: 'ExistsDatabase',
   async: true,
 })
 export class ExistsDatabase implements ValidatorConstraintInterface {
-  constructor(@Inject(SEQUELIZE) private readonly sequelize: Sequelize) {}
+  constructor(@Inject(DATA_SOURCE) private readonly connection: DataSource) {}
 
   async validate(
     value: any,
@@ -23,15 +23,21 @@ export class ExistsDatabase implements ValidatorConstraintInterface {
       return true;
     }
 
-    const [modelClass, column] = validationArguments.constraints;
+    const entityClass = validationArguments.constraints[0];
+    const column =
+      (validationArguments.constraints[1] as string) ||
+      validationArguments.property;
 
-    const model = await this.sequelize.getRepository(modelClass).findOne({
+    const entityRepository = this.connection.getRepository(entityClass);
+
+    const entity = await entityRepository.findOne({
       where: {
-        [column || validationArguments.property]: value,
+        [column]: value,
       },
+      select: [column],
     });
 
-    return Boolean(model);
+    return Boolean(entity);
   }
 
   defaultMessage?(validationArguments?: ValidationArguments): string {

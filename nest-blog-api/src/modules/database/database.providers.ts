@@ -1,31 +1,30 @@
-import { Sequelize } from 'sequelize-typescript';
-import { Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { User } from '../user/user.model';
-import { Category } from '../category/category.model';
-import { SEQUELIZE } from 'src/constants/sequelize';
-import { Post } from '../post/models/post.model';
-import { PostCategory } from '../post/models/post-category.model';
+import { DataSource } from 'typeorm';
+import { User } from '../user/user.entity';
+import { DATA_SOURCE } from 'src/constants/database';
+import { Post } from '../post/post.entity';
+import { Category } from '../category/category.entity';
+import { Comment } from '../comment/comment.entity';
+import { Like } from '../like/like.entity';
 
 export const databaseProviders = [
   {
-    provide: SEQUELIZE,
+    provide: DATA_SOURCE,
     inject: [ConfigService],
     useFactory: async (configService: ConfigService) => {
-      const sequelize = new Sequelize({
-        dialect: configService.get('database.dialect'),
+      const dataSource = new DataSource({
+        type: 'postgres', //@TODO: get from config
         host: configService.get('database.host'),
         database: configService.get('database.database'),
         username: configService.get('database.username'),
         password: configService.get('database.password'),
         port: configService.get('database.port'),
         schema: configService.get('database.schema'),
-        models: [User, Post, Category, PostCategory],
-        logging: (sql, timing) => new Logger(Sequelize.name).log(sql),
+        entities: [User, Post, Category, Comment, Like],
+        logging: Boolean(configService.get('database.logging')),
       });
 
-      await sequelize.authenticate();
-      return sequelize;
+      return dataSource.initialize();
     },
   },
 ];

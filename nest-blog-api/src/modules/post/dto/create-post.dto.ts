@@ -7,9 +7,10 @@ import {
   Validate,
 } from 'class-validator';
 import { UniqueDatabase } from 'src/validators/unique-database';
-import { Post } from '../models/post.model';
+import { Post } from '../post.entity';
+import { BaseDTO } from 'src/modules/app/dto/base.dto';
 
-export class CreatePostDTO {
+export class CreatePostDTO extends BaseDTO {
   id?: number;
 
   @IsDefined()

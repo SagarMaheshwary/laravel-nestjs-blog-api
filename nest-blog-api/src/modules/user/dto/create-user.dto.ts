@@ -1,6 +1,7 @@
 import { IsDefined, Length, IsEmail, Validate } from 'class-validator';
+import { User } from '../user.entity';
 import { UniqueDatabase } from 'src/validators/unique-database';
-import { User } from '../user.model';
+import { Role } from '../enum/role.enum';
 
 export class CreateUserDTO {
   id?: number;
@@ -19,5 +20,5 @@ export class CreateUserDTO {
   @Length(5, 255)
   password: string;
 
-  role?: string;
+  role?: Role;
 }

@@ -1,5 +1,5 @@
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
+import { AppModule } from './modules/app/app.module';
 import { ConfigService } from '@nestjs/config';
 import {
   HttpStatus,
@@ -35,7 +35,9 @@ async function bootstrap() {
     fallbackOnErrors: true,
   });
 
-  await app.listen(config.get('app.port'));
+  const port = config.get('app.port') || 3000;
+
+  await app.listen(port, () => console.log(`SERVER STARTED ON PORT: ${port}`));
 }
 
 bootstrap();
