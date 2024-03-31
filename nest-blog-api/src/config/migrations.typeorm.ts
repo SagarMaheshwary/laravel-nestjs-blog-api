@@ -17,8 +17,8 @@ import { CreateLikesTable1687695288665 } from 'src/database/migrations/168769528
  * npx typeorm migrations:create src/database/migrations/create-users-table
  *
  * Commands for running the migrations:
- * npx typeorm migration:run -d dist/config/migrations.typeorm.js
- * npx typeorm migration:revert -d dist/config/migrations.typeorm.js
+ * npm run migrations:run
+ * npm run migrations:revert
  */
 
 configEnv();

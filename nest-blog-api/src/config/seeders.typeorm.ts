@@ -12,15 +12,15 @@ import { Comment } from 'src/modules/comment/comment.entity';
 import { Like } from 'src/modules/like/like.entity';
 
 /**
- * CONFIG FILE USED WHEN RUNNING THE SEEDS (WE BASICALLY USE MIGRATIONS TO ACHEIVE THAT)
+ * CONFIG FILE USED WHEN RUNNING THE SEEDS (TYPEORM MIGRATIONS)
  * -------------------------------------------------------------------------------------
  *
  * Creating seeder:
  * npx typeorm migrations:create src/database/seeders/users-table-seeder
  *
  * Commands for running the migrations:
- * npx typeorm migration:run -d dist/config/seeders.typeorm.js
- * npx typeorm migration:revert -d dist/config/seeders.typeorm.js
+ * npm run seeders:run
+ * npm run seeders:revert
  */
 
 configEnv();

@@ -5,8 +5,14 @@ import {
   ValidatorConstraintInterface,
 } from 'class-validator';
 import { DATA_SOURCE } from 'src/constants/database';
-import { DataSource, getRepository } from 'typeorm';
+import { DataSource } from 'typeorm';
 
+/**
+ * Checkout UniqueDatabase validator class for usage instructions as it's
+ * similar to that class.
+ *
+ * Checkout LoginDTO for example.
+ */
 @ValidatorConstraint({
   name: 'ExistsDatabase',
   async: true,
